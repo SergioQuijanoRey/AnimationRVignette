@@ -1,6 +1,6 @@
 ---
 title: "Animaciones en R con el paquete animation"
-author: "Lucía Salamanca López, Sergio QUijano REy, ALejandro Borrego Megías"
+author: "Lucía Salamanca López, Sergio Quijano Rey, Alejandro Borrego Megías"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -16,11 +16,40 @@ knitr::opts_chunk$set(
 )
 ```
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+## Animaciones en R
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
+
+## Instalación del paquete *animation*
+
+```{r}
+#install.packages("animation")
+
+```
+```{r}
+library(animation)
+```
+
+
+## Ejemplos 
+
+
+### Método de Bisección
+
+```{r, dev='png'}
+f = function(x) x^3 - 7 * x - 10
+saveHTML({bisection.method(f, c(-3, 5))
+},htmlfile = "Biseccion.html")
+```
+
+
+### Método de Gradiente Descendente 
+
+```{r, dev='png'}
+f1 = function(x, y) x^2 + 3 * sin(y)
+saveHTML({grad.desc(f1, pi * c(-2, -2, 2, 2), c(-2 * pi, 2))
+},htmlfile = "GD.html")
+```
+
 
 ## Vignette Info
 
