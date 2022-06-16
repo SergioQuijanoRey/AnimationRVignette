@@ -12,7 +12,7 @@
 
 <meta name="author" content="Lucía Salamanca López, Sergio Quijano Rey, Alejandro Borrego Megías" />
 
-<meta name="date" content="2022-06-15" />
+<meta name="date" content="2022-06-16" />
 
 <title>Animaciones en R con el paquete animation</title>
 
@@ -141,232 +141,58 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <h1 class="title toc-ignore">Animaciones en R con el paquete animation</h1>
 <h4 class="author">Lucía Salamanca López, Sergio Quijano Rey, Alejandro Borrego Megías</h4>
-<h4 class="date">2022-06-15</h4>
+<h4 class="date">2022-06-16</h4>
 
 
 
 <div id="animaciones-en-r" class="section level2">
 <h2>Animaciones en R</h2>
+<p>Durante el curso hemos explorado las posibilidades de R en el ámbito de la Estadística computacional, haciendo análisis exploratorio de datos, problemas de regresión lineal, aproximación de integrales y distribuciones, etc… Además hemos explorado diversas funciones que permiten generar gráficos que ayudan a explicar y entender mejor estos procedimientos.</p>
+<p>Motivados por la gran potencia de R para la generación de gráficos decidimos explorar si también existen paquetes que permitan crear animaciones para comprender mejor algoritmos clásicos tanto de estadística como de la matemática aplicada en general. Es por ello que nuestro proyecto se basa en utilizar algunas de las funciones del paquete <em>animation</em> y valorar los resultados que se obtienen.</p>
+<p>El paquete <em>animation</em> proporciona un extenso catálogo de funciones que abarcan problemas de la teoría de probabilidad, la estadística multivariante, modelos lineales, series temporales y algoritmos de minería de datos y aprendizaje automático. La finalidad del paquete mostrar el funcionamiento de estas herramientas visualmente con una finalidad didáctica.</p>
+<p>Es importante mencionar que las animaciones no se pueden visualizar en este HTML, cada una de las funciones que usemos genera un HTML con un nombre de acuerdo a la función que permitirá ver la animación y controlar su ejecución permitiendo aumentar o disminuir la velocidad, o parar la animación en un instante determinado. Estos ficheros se entregan junto con el proyecto final.</p>
 </div>
 <div id="instalación-del-paquete-animation" class="section level2">
 <h2>Instalación del paquete <em>animation</em></h2>
+<p>Para la instalación del paquete lo hacemos a través de <strong>CRAN</strong> como con el resto de paquetes que hemos empleado durante el curso.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&quot;animation&quot;)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(animation)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: package &#39;animation&#39; was built under R version 4.1.3</span></span></code></pre></div>
 </div>
 <div id="ejemplos" class="section level2">
 <h2>Ejemplos</h2>
+<p>A continuación se muestran algunos ejemplos de uso de algunas de sus funciones, como se verá, en todos los casos hacemos uso de una función denominada <code>saveHTML()</code>, que nos permite convertir en un fichero HTML cada una de las animaciones, como parámetros debemos pasar la secuencia de imágenes que compoenen la animación y que son generadas por la función principal, y el nombre del fichero HTML que queremos generar.</p>
 <div id="método-de-bisección" class="section level3">
 <h3>Método de Bisección</h3>
+<p>La siguiente función aplica el método de Bisección para encontrar una raíz de cierta función continua <span class="math inline">\(f(x)\)</span>. Si recordamos el método, este requiere de dos puntos iniciales <span class="math inline">\(a,b\)</span> de manera que <span class="math inline">\(f(a)&gt;0\)</span> y <span class="math inline">\(f(b)&lt;0\)</span> o viceversa. De esta forma, por el teorema de Bolzano sabemos que en el intervalo <span class="math inline">\([a,b]\)</span> hay una raíz de la función.</p>
+<p>El algoritmo en cada iteración calcula el punto medio <span class="math inline">\(c\)</span> del intervalo <span class="math inline">\([a,b]\)</span> y evalúa la función en ese punto medio, si el signo es igual que <span class="math inline">\(f(a)\)</span> reemplaza <span class="math inline">\(a\)</span> por <span class="math inline">\(c\)</span> y si no al contrario. De esta manera vamos reduciendo el intervalo en que se encuentra la raíz hasta que se obtenga la raíz exacta o bien se sobrepase una cierta tolerancia.</p>
+<p>En nuestro caso vamos a probar con la función <span class="math inline">\(f(x)=x^3 - 7x -10\)</span> y vamos a usar el intervalo <span class="math inline">\([-3,5]\)</span> pues como vemos en ese intervalo se cumplen las condiciones del algoritmo y hay una raíz.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">=</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="dv">3</span> <span class="sc">-</span> <span class="dv">7</span> <span class="sc">*</span> x <span class="sc">-</span> <span class="dv">10</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveHTML</span>({<span class="fu">bisection.method</span>(f, <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">5</span>))</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>},<span class="at">htmlfile =</span> <span class="st">&quot;Biseccion.html&quot;</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HTML file created at: Biseccion.html</span></span></code></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(f, <span class="at">from =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">to=</span><span class="dv">5</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAAAXVBMVEUAAAAAADoAAGYAOpAAZrY6AAA6ADo6kNtmAABmADpmAGZmOpBmZmZmtttmtv+QOgCQOmaQZgCQ2/+2ZgC2/7a2///bkDrb2//b/9vb////tmb/25D//7b//9v////szdJ9AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAGdklEQVR4nO2da3vaOBBG3Vy2dC9lN2y9WwL8/59ZjKENCdY7skaWlJzzoTFP5dFwIsuymZjuAEG60gnUDoIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIECBIgSIAggbOgrhlKCfINlw8ECRAkWFhQ/KFdju7Fv+bmzr1XDYLCdFc/zO2du68YBAkQFKZ79dO8g3P/1YIgAYIECArTvdkw7+GcQKUgSIAgAYLCdDe2zLtY2K/Ha/a7by7hFie3oL77PG5sLxtJ4ZYns6D9+qeW/v57crjl6W5umveR7FZfL5vbiYPsYwtiBCn67jyEGp2Dsgs6HmTjWWxi/FQuqJvYNu/knEN1FBTUxqcaCwjaHE9ez49d9+nJJdzC5Bd08vPb09UJPyHcwnSTL8x7CXar47lr8zBstniaX0LQ18taqMGFYhd4Zd5NMIyevtURtISg3eru22kIbadm6Q8uaFhCn3hwCrcgXfCleT/nNCoCQQIECRAU5nViCHoFgsK8yQtB1yAozNu0EHQFgsLcyApBL0GQwEfQ+Tq0m7hXODuV8txKKlbQbnW5Qt+vp0sTpqNUfdPeQdDu95dOrl8l51IcjxHkRY2CbuYUL2j/X7ZkCuMkaLcaJ6H937OPr5h+l+N2SrPOYsON5n7GFD2n3+VwE3Sur5so20jKpih+gk6GklZBNQqayGiOoE3X/bWermxJSacgboKOS8Xh6Nq+tznIT9Af49B5Z2exqYRYKJ5xEvRuLzUm88l0sdpcpb2boIPpdkd7lfaegjTt1UlPpxM7B62+7r5M1R3+pL1Ke0dBnw2CmhtBgWxiD7H+1z3BwEKxtUp7R0HHQaRHUGuV9qFkWCgeqhJU5U37YC6ZBPWXdVLfwFmsgKD+09P51mwDgsKpZFwo7tfHKRpBt7gsFDf33+sXJDLJe6mxeUDQTS5ajsuh2gWpRLKdxcaDbL9G0DxqESTz+OCCdBoISm4R27BIuJkYskBQepPIhkXCzcOSxEcWZMoBQR6NohoWCZcvBQS5tIppWCRcvgw+rCBrAghyaud+074ZlhWUK1y+7j+moIjeqxUUN76dO5/TdjFBV4d+Fk1R8SoTdNuGr6W4UHUJCn5I7uQoMko9ggyjxMNRbIRqBFlX/omOonevRFBM3imO4vesQ1D0r3VmNjN2q0LQnLznOJrzHjIJiioknzscIh3NG3Z5BEUVkieMzaipa2YXOeJHlQGnnpVsd5ZnT+xZBMUUkjusbAzrp4To7g0PMSPIa3UcjJPUR645yFZI7nhqvH29ln4Vl+ksVqiQfPbtwEBI94ZFwuUDQYJMgpoqJA+SaZKeKiT3nB2WIeNpPlxI3gw5BBkKyZM7KtLMK4ShkDy5o6YFGQrJkztqW5AuJE/uqHFB+Tt6D4JeXLP6d4SgGps5h0CQAEGCeYJapZmLp1IgSIAgAYIECBIgSIAgAYIECBIgSIAgAYIESwk61aapi9xt4FukI0ONbNKejj2wkKD9+vjO++mvHz0xfHvr5De4xoU6B0x8fPjAQoKeH4e7/eEPi8bbKBv1zi2hRnardgSNhIeH/Z3LUCP9/T+NCdoE3/zpi9oni/uiQl3itTMHnZisSzv/92lQWIaGDDUwHLFtCdoa5mijIBVqYCijbEqQ/KXbDzHD+BmjNSGoH1ctvXxT5klahzr8er5x4jepLDaCep2p8TRvCXWhiRF04vnR8Eu3LRRNoc60I+g84MW77y2XGrZQI+0IahcECRAkQJAAQQIECRAkQJAAQQIECRAkQJAAQQIECRAkQJAAQQIECRAkQJAAQQIECRAkQJAAQQIECRAkQJAAQQIECWoXNBSc7VYF/w69dkFD2dnUUy0XoXZBh+3dv18stVK5qF7QYWP6s4xs1C9om1yomkT1gvbrP6OfduVJ9YL6+/+LPkyldkHDowmNf9+Sh9oFDYW8+3XBabp2QcVBkABBAgQJECRAkABBAgQJECRAkABBAgQJECRAkABBAgQJECRAkABBAgQJECRAkABBAgQJfgCcSk7O+5LVdQAAAABJRU5ErkJggg==" /><!-- --></p>
+<p>A continuación usamos la función de animation correspondiente, se trata de <code>bisection.method</code> y requiere como parámetros la función <span class="math inline">\(f\)</span> que usaremos y los valores iniciales <span class="math inline">\(a,b\)</span> del método de bisección:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveHTML</span>({<span class="fu">bisection.method</span>(f, <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">5</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>},<span class="at">htmlfile =</span> <span class="st">&quot;Biseccion.html&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HTML file created at: Biseccion.html</span></span></code></pre></div>
 </div>
 <div id="método-de-gradiente-descendente" class="section level3">
 <h3>Método de Gradiente Descendente</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">=</span> <span class="cf">function</span>(x, y) x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">sin</span>(y)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveHTML</span>({<span class="fu">grad.desc</span>(f1, pi <span class="sc">*</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>), <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span> <span class="sc">*</span> pi, <span class="dv">2</span>))</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>},<span class="at">htmlfile =</span> <span class="st">&quot;GD.html&quot;</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HTML file created at: GD.html</span></span></code></pre></div>
+<p>Vamos a explorar la función que permite visualizar el método para encontrar mínimos locales de funciones en dos dimensiones (en este caso) conocido como Gradiente Descendente.</p>
+<p>El método sigue la intuición de que el gradiente de una función apunta siempre a máximos locales, luego lo que hacemos es ir en la dirección contraria del gradiente para tratar de hallar mínimos locales. Este método no garantiza que el mínimo obtenido sea el mínimo global de la función (a no ser que la función sea convexa).</p>
+<p>Para ello partimos de un punto inicial aleatorio del dominio de la función, y en cada iteración nos desplazamos en la dirección que apunta el gradiente cambiado de signo dando un paso de cierto tamaño que idealmente será grande para aproximarse rápido al mínimo y luego se reducirá para ajustar con precisión dicho mínimo.</p>
+<p>La función que emplearemos será:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">=</span> <span class="cf">function</span>(x, y) x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">sin</span>(y)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(pi<span class="sc">*-</span><span class="dv">2</span>,pi<span class="sc">*</span><span class="dv">2</span>,<span class="at">length.out=</span><span class="dv">100</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">seq</span>(pi<span class="sc">*-</span><span class="dv">2</span>,pi<span class="sc">*</span><span class="dv">2</span>,<span class="at">length.out=</span><span class="dv">100</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">outer</span>(x<span class="sc">^</span><span class="dv">2</span>,<span class="dv">3</span><span class="sc">*</span> <span class="fu">sin</span>(y),<span class="st">`</span><span class="at">+</span><span class="st">`</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(x,y,z,<span class="at">theta =</span> <span class="dv">30</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --> Como podemos apreciar en la imagen, la función tiene dos mínimos en el domino que usaremos que es <span class="math inline">\([-2\pi,2\pi] \times [-2\pi,2\pi]\)</span>.</p>
+<p>Para esta tarea usaremos la función <code>grad.desc</code>. Los parámetros que debemos pasarle son: La función que vamos a usar, el dominio en el que trabajaremos y el punto inicial, que en nuestro caso será el <span class="math inline">\((-2\pi,2)\)</span>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveHTML</span>({<span class="fu">grad.desc</span>(f1, pi <span class="sc">*</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>), <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span> <span class="sc">*</span> pi, <span class="dv">2</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>},<span class="at">htmlfile =</span> <span class="st">&quot;GD.html&quot;</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HTML file created at: GD.html</span></span></code></pre></div>
 </div>
-</div>
-<div id="vignette-info" class="section level2">
-<h2>Vignette Info</h2>
-<p>Note the various macros within the <code>vignette</code> section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the <code>title</code> field and the <code>\VignetteIndexEntry</code> to match the title of your vignette.</p>
-</div>
-<div id="styles" class="section level2">
-<h2>Styles</h2>
-<p>The <code>html_vignette</code> template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:</p>
-<pre><code>output: 
-  rmarkdown::html_vignette:
-    css: mystyles.css</code></pre>
-</div>
-<div id="figures" class="section level2">
-<h2>Figures</h2>
-<p>The figure sizes have been customised so that you can easily put two images side-by-side.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">1</span>)</span></code></pre></div>
-<p><img src="data:image/png;base64,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" /><img src="data:image/png;base64,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" /></p>
-<p>You can enable figure captions by <code>fig_caption: yes</code> in YAML:</p>
-<pre><code>output:
-  rmarkdown::html_vignette:
-    fig_caption: yes</code></pre>
-<p>Then you can use the chunk option <code>fig.cap = &quot;Your figure caption.&quot;</code> in <strong>knitr</strong>.</p>
-</div>
-<div id="more-examples" class="section level2">
-<h2>More Examples</h2>
-<p>You can write math expressions, e.g. <span class="math inline">\(Y = X\beta + \epsilon\)</span>, footnotes<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, and tables, e.g. using <code>knitr::kable()</code>.</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">mpg</th>
-<th align="right">cyl</th>
-<th align="right">disp</th>
-<th align="right">hp</th>
-<th align="right">drat</th>
-<th align="right">wt</th>
-<th align="right">qsec</th>
-<th align="right">vs</th>
-<th align="right">am</th>
-<th align="right">gear</th>
-<th align="right">carb</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Mazda RX4</td>
-<td align="right">21.0</td>
-<td align="right">6</td>
-<td align="right">160.0</td>
-<td align="right">110</td>
-<td align="right">3.90</td>
-<td align="right">2.620</td>
-<td align="right">16.46</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">4</td>
-</tr>
-<tr class="even">
-<td align="left">Mazda RX4 Wag</td>
-<td align="right">21.0</td>
-<td align="right">6</td>
-<td align="right">160.0</td>
-<td align="right">110</td>
-<td align="right">3.90</td>
-<td align="right">2.875</td>
-<td align="right">17.02</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">4</td>
-</tr>
-<tr class="odd">
-<td align="left">Datsun 710</td>
-<td align="right">22.8</td>
-<td align="right">4</td>
-<td align="right">108.0</td>
-<td align="right">93</td>
-<td align="right">3.85</td>
-<td align="right">2.320</td>
-<td align="right">18.61</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">Hornet 4 Drive</td>
-<td align="right">21.4</td>
-<td align="right">6</td>
-<td align="right">258.0</td>
-<td align="right">110</td>
-<td align="right">3.08</td>
-<td align="right">3.215</td>
-<td align="right">19.44</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">Hornet Sportabout</td>
-<td align="right">18.7</td>
-<td align="right">8</td>
-<td align="right">360.0</td>
-<td align="right">175</td>
-<td align="right">3.15</td>
-<td align="right">3.440</td>
-<td align="right">17.02</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">2</td>
-</tr>
-<tr class="even">
-<td align="left">Valiant</td>
-<td align="right">18.1</td>
-<td align="right">6</td>
-<td align="right">225.0</td>
-<td align="right">105</td>
-<td align="right">2.76</td>
-<td align="right">3.460</td>
-<td align="right">20.22</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">Duster 360</td>
-<td align="right">14.3</td>
-<td align="right">8</td>
-<td align="right">360.0</td>
-<td align="right">245</td>
-<td align="right">3.21</td>
-<td align="right">3.570</td>
-<td align="right">15.84</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">4</td>
-</tr>
-<tr class="even">
-<td align="left">Merc 240D</td>
-<td align="right">24.4</td>
-<td align="right">4</td>
-<td align="right">146.7</td>
-<td align="right">62</td>
-<td align="right">3.69</td>
-<td align="right">3.190</td>
-<td align="right">20.00</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">2</td>
-</tr>
-<tr class="odd">
-<td align="left">Merc 230</td>
-<td align="right">22.8</td>
-<td align="right">4</td>
-<td align="right">140.8</td>
-<td align="right">95</td>
-<td align="right">3.92</td>
-<td align="right">3.150</td>
-<td align="right">22.90</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">2</td>
-</tr>
-<tr class="even">
-<td align="left">Merc 280</td>
-<td align="right">19.2</td>
-<td align="right">6</td>
-<td align="right">167.6</td>
-<td align="right">123</td>
-<td align="right">3.92</td>
-<td align="right">3.440</td>
-<td align="right">18.30</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">4</td>
-</tr>
-</tbody>
-</table>
-<p>Also a quote using <code>&gt;</code>:</p>
-<blockquote>
-<p>“He who gives up [code] safety for [code] speed deserves neither.” (<a href="https://twitter.com/hadleywickham/status/504368538874703872">via</a>)</p>
-</blockquote>
-</div>
-<div class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>A footnote here.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-</ol>
 </div>
 
 

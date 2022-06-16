@@ -19,8 +19,17 @@ knitr::opts_chunk$set(
 ## Animaciones en R
 
 
+Durante el curso hemos explorado las posibilidades de R en el ámbito de la Estadística computacional, haciendo análisis exploratorio de datos, problemas de regresión lineal, aproximación de integrales y distribuciones, etc... Además hemos explorado diversas funciones que permiten generar gráficos que ayudan a explicar y entender mejor estos procedimientos. 
+
+Motivados por la gran potencia de R para la generación de gráficos decidimos explorar si también existen paquetes que permitan crear animaciones para comprender mejor algoritmos clásicos tanto de estadística como de la matemática aplicada en general. Es por ello que nuestro proyecto se basa en utilizar algunas de las funciones del paquete *animation* y valorar los resultados que se obtienen.
+
+El paquete *animation* proporciona un extenso catálogo de funciones que abarcan problemas de la teoría de probabilidad, la estadística multivariante, modelos lineales, series temporales y algoritmos de minería de datos y aprendizaje automático. La finalidad del paquete mostrar el funcionamiento de estas herramientas visualmente con una finalidad didáctica.
+
+Es importante mencionar que las animaciones no se pueden visualizar en este HTML, cada una de las funciones que usemos genera un HTML con un nombre de acuerdo a la función que permitirá ver la animación y controlar su ejecución permitiendo aumentar o disminuir la velocidad, o parar la animación en un instante determinado. Estos ficheros se entregan junto con el proyecto final.
+
 ## Instalación del paquete *animation*
 
+Para la instalación del paquete lo hacemos a través de **CRAN** como con el resto de paquetes que hemos empleado durante el curso.  
 ```{r}
 #install.packages("animation")
 
@@ -32,11 +41,25 @@ library(animation)
 
 ## Ejemplos 
 
+A continuación se muestran algunos ejemplos de uso de algunas de sus funciones, como se verá, en todos los casos hacemos uso de una función denominada `saveHTML()`, que nos permite convertir en un fichero HTML cada una de las animaciones, como parámetros debemos pasar la secuencia de imágenes que compoenen la animación y que son generadas por la función principal, y el nombre del fichero HTML que queremos generar. 
 
 ### Método de Bisección
 
-```{r, dev='png'}
+La siguiente función aplica el método de Bisección para encontrar una raíz de cierta función continua $f(x)$. Si recordamos el método, este requiere de dos puntos iniciales $a,b$ de manera que $f(a)>0$ y $f(b)<0$ o viceversa. De esta forma, por el teorema de Bolzano sabemos que en el intervalo $[a,b]$ hay una raíz de la función.
+
+El algoritmo en cada iteración calcula el punto medio $c$ del intervalo $[a,b]$ y evalúa la función en ese punto medio, si el signo es igual que $f(a)$ reemplaza $a$ por $c$ y si no al contrario. De esta manera vamos reduciendo el intervalo en que se encuentra la raíz hasta que se obtenga la raíz exacta o bien se sobrepase una cierta tolerancia.
+
+En nuestro caso vamos a probar con la función $f(x)=x^3 - 7x -10$ y vamos a usar el intervalo $[-3,5]$ pues como vemos en ese intervalo se cumplen las condiciones del algoritmo y hay una raíz.
+
+
+```{r}
 f = function(x) x^3 - 7 * x - 10
+curve(f, from = -3, to=5)
+abline(h=0)
+```
+
+A continuación usamos la función de animation correspondiente, se trata de `bisection.method` y requiere como parámetros la función $f$ que usaremos y los valores iniciales $a,b$ del método de bisección:
+```{r, dev='png'}
 saveHTML({bisection.method(f, c(-3, 5))
 },htmlfile = "Biseccion.html")
 ```
@@ -44,51 +67,27 @@ saveHTML({bisection.method(f, c(-3, 5))
 
 ### Método de Gradiente Descendente 
 
+Vamos a explorar la función que permite visualizar el método para encontrar mínimos locales de funciones en dos dimensiones (en este caso) conocido como Gradiente Descendente. 
+
+El método sigue la intuición de que el gradiente de una función apunta siempre a máximos locales, luego lo que hacemos es ir en la dirección contraria del gradiente para tratar de hallar mínimos locales. Este método no garantiza que el mínimo obtenido sea el mínimo global de la función (a no ser que la función sea convexa).
+
+Para ello partimos de un punto inicial aleatorio del dominio de la función, y en cada iteración nos desplazamos en la dirección que apunta el gradiente cambiado de signo dando un paso de cierto tamaño que idealmente será grande para aproximarse rápido al mínimo y luego se reducirá para ajustar con precisión dicho mínimo.
+
+La función que emplearemos será: 
+
 ```{r, dev='png'}
 f1 = function(x, y) x^2 + 3 * sin(y)
+x <- seq(pi*-2,pi*2,length.out=100)
+y <- seq(pi*-2,pi*2,length.out=100)
+z <- outer(x^2,3* sin(y),`+`)
+persp(x,y,z,theta = 30)
+```
+Como podemos apreciar en la imagen, la función tiene dos mínimos en el domino que usaremos que es $[-2\pi,2\pi] \times [-2\pi,2\pi]$.
+
+Para esta tarea usaremos la función `grad.desc`. Los parámetros que debemos pasarle son: La función que vamos a usar, el dominio en el que trabajaremos y el punto inicial, que en nuestro caso será el $(-2\pi,2)$.
+
+```{r, dev='png'}
 saveHTML({grad.desc(f1, pi * c(-2, -2, 2, 2), c(-2 * pi, 2))
 },htmlfile = "GD.html")
 ```
 
-
-## Vignette Info
-
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
-```
-
-You can enable figure captions by `fig_caption: yes` in YAML:
-
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
-```
-
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
