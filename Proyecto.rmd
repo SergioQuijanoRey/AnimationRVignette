@@ -12,6 +12,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+<!-- Este codigo es necesario para inicializar el documento tipo Vignette -->
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
