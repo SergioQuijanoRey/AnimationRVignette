@@ -43,3 +43,7 @@ library(animation)
 ```
 
 # Ejemplos
+
+## `knn.ani`
+
+
