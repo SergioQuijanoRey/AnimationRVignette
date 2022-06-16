@@ -22,4 +22,12 @@ knitr::opts_chunk$set(
 
 # Introducción
 
-TODO -- aquí tenemos que escribir nuestra Introducción de forma conjunta
+En este *vignette* vamos a mostrar varios ejemplos de uso del paquete `animation`. Este paquete contiene una serie de funciones para realizar animaciones sobre distintas aplicaciones de la estadística ^[Como muestra la [documentación oficial del paquete](https://cran.r-project.org/web/packages/animation/animation.pdf)]. El paquete también ofrece funciones para guardar las animaciones en distintos formatos, como `PDF`, `GIF`, `HTML`, ...
+
+Además de este *vignette*, se puede consultar la [documentación oficial del paquete](https://cran.r-project.org/web/packages/animation/animation.pdf).
+
+Una vez explicado esto, procedemos a cargar el paquete con el que vamos a trabajar y a mostrar una serie de ejemplos sobre el uso de este paquete. Notar que no vamos a poder mostrar ejemplos de todas las funciones del paquete por la gran extensión en funcionalidad de este mismo.
+
+```{r}
+library(animation)
+```
