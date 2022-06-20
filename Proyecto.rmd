@@ -91,3 +91,54 @@ saveHTML({grad.desc(f1, pi * c(-2, -2, 2, 2), c(-2 * pi, 2))
 },htmlfile = "GD.html")
 ```
 
+
+### Integración de Monte Carlo
+
+El paquete animation incluye una función que realiza la animación del método de integración de Monte Carlo.
+
+Este método utiliza números aleatorios para calcular el valor de integrales del estilo:
+
+$$ I = \int \limits_0^1 h(x) dx$$
+Para ello, teniendo en cuenta que la función de densidad de la distribución uniforme en el intervalo $(0,1)$ es $f(x)=1$, podemos escribir la integral anterior como:
+
+$$ I = \int \limits_0^1 h(x) dx = \Bbb{E}[h(X)]$$
+
+Donde $X \sim \mathcal{U}$. Al describirlo como una media teórica, podemos aproximarla simulando $n$ variables aleatorias uniformes $X_1,\dots,X_n$: 
+
+$$ I = \int \limits_0^1 h(x) dx = \Bbb{E}[h(X)] \approx \frac{1}{n}  \sum_{i=1}^{n}h(X_i)$$
+
+Lo que muestra la función `MC.samplemean` son los rectángulos de ancho $\frac1n$ y de alto $h(x_i)$. De esta manera podemos comparar gráficamente la diferencia entre el valor exacto de la integral y la aproximación por el método de Monte Carlo.
+
+
+Los argumentos de la función son: la función a integrar, el número de puntos que se toman de la distribución uniforme, el color de los rectángulos y si las posiciones de los rectángulos en el eje x deben ser ajustadas. 
+
+Esta función devuelve una lista con los números aleatorios generados, la función evaluada en dicho puntos, el valor de la n y el valor estimado de la integral. 
+
+Vamos a mostrar un ejemplo con la función $h(x) =4x^4$.
+
+Primero mostramos un gráfico de la función:
+
+```{r, fig.align='center',fig.cap='Función a integrar'}
+# definimos la función a integrar
+h<-function(x) (4*x^4) * (x>0 & x<1)
+# visualizamos la función en el dominio de integración16
+curve(h,0,1)
+```
+```{r,dev='png', include = FALSE}
+set.seed(1)
+montecarlo<-MC.samplemean(FUN = h,adj.x = FALSE, col.rect = c(rgb(0, 0, 0, 0.3), rgb(1, 0, 0)), border = NA, n=60)
+saveHTML({montecarlo},htmlfile = "MonteCarlo.html")
+```
+
+```{r}
+# Mostramos la estimación de la integral
+montecarlo$est
+```
+
+Sabemos que el valor de la integral es $\frac{4}{5}$ por lo que el error relativo de la aproximación es de:
+
+```{r}
+abs(montecarlo$est-4/5)/(4/5)
+```
+
+Podemos encontrar la animación en el archivo _MonteCarlo.html_.

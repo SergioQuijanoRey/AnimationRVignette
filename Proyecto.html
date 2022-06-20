@@ -12,11 +12,23 @@
 
 <meta name="author" content="Lucía Salamanca López, Sergio Quijano Rey, Alejandro Borrego Megías" />
 
-<meta name="date" content="2022-06-16" />
+<meta name="date" content="2022-06-21" />
 
 <title>Animaciones en R con el paquete animation</title>
 
-<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -26,6 +38,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -127,7 +140,187 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 
 
@@ -139,59 +332,167 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<h1 class="title toc-ignore">Animaciones en R con el paquete animation</h1>
-<h4 class="author">Lucía Salamanca López, Sergio Quijano Rey, Alejandro Borrego Megías</h4>
-<h4 class="date">2022-06-16</h4>
+<h1 class="title toc-ignore">Animaciones en R con el paquete
+animation</h1>
+<h4 class="author">Lucía Salamanca López, Sergio Quijano Rey, Alejandro
+Borrego Megías</h4>
+<h4 class="date">2022-06-21</h4>
 
 
 
 <div id="animaciones-en-r" class="section level2">
 <h2>Animaciones en R</h2>
-<p>Durante el curso hemos explorado las posibilidades de R en el ámbito de la Estadística computacional, haciendo análisis exploratorio de datos, problemas de regresión lineal, aproximación de integrales y distribuciones, etc… Además hemos explorado diversas funciones que permiten generar gráficos que ayudan a explicar y entender mejor estos procedimientos.</p>
-<p>Motivados por la gran potencia de R para la generación de gráficos decidimos explorar si también existen paquetes que permitan crear animaciones para comprender mejor algoritmos clásicos tanto de estadística como de la matemática aplicada en general. Es por ello que nuestro proyecto se basa en utilizar algunas de las funciones del paquete <em>animation</em> y valorar los resultados que se obtienen.</p>
-<p>El paquete <em>animation</em> proporciona un extenso catálogo de funciones que abarcan problemas de la teoría de probabilidad, la estadística multivariante, modelos lineales, series temporales y algoritmos de minería de datos y aprendizaje automático. La finalidad del paquete mostrar el funcionamiento de estas herramientas visualmente con una finalidad didáctica.</p>
-<p>Es importante mencionar que las animaciones no se pueden visualizar en este HTML, cada una de las funciones que usemos genera un HTML con un nombre de acuerdo a la función que permitirá ver la animación y controlar su ejecución permitiendo aumentar o disminuir la velocidad, o parar la animación en un instante determinado. Estos ficheros se entregan junto con el proyecto final.</p>
+<p>Durante el curso hemos explorado las posibilidades de R en el ámbito
+de la Estadística computacional, haciendo análisis exploratorio de
+datos, problemas de regresión lineal, aproximación de integrales y
+distribuciones, etc… Además hemos explorado diversas funciones que
+permiten generar gráficos que ayudan a explicar y entender mejor estos
+procedimientos.</p>
+<p>Motivados por la gran potencia de R para la generación de gráficos
+decidimos explorar si también existen paquetes que permitan crear
+animaciones para comprender mejor algoritmos clásicos tanto de
+estadística como de la matemática aplicada en general. Es por ello que
+nuestro proyecto se basa en utilizar algunas de las funciones del
+paquete <em>animation</em> y valorar los resultados que se obtienen.</p>
+<p>El paquete <em>animation</em> proporciona un extenso catálogo de
+funciones que abarcan problemas de la teoría de probabilidad, la
+estadística multivariante, modelos lineales, series temporales y
+algoritmos de minería de datos y aprendizaje automático. La finalidad
+del paquete mostrar el funcionamiento de estas herramientas visualmente
+con una finalidad didáctica.</p>
+<p>Es importante mencionar que las animaciones no se pueden visualizar
+en este HTML, cada una de las funciones que usemos genera un HTML con un
+nombre de acuerdo a la función que permitirá ver la animación y
+controlar su ejecución permitiendo aumentar o disminuir la velocidad, o
+parar la animación en un instante determinado. Estos ficheros se
+entregan junto con el proyecto final.</p>
 </div>
 <div id="instalación-del-paquete-animation" class="section level2">
 <h2>Instalación del paquete <em>animation</em></h2>
-<p>Para la instalación del paquete lo hacemos a través de <strong>CRAN</strong> como con el resto de paquetes que hemos empleado durante el curso.</p>
+<p>Para la instalación del paquete lo hacemos a través de
+<strong>CRAN</strong> como con el resto de paquetes que hemos empleado
+durante el curso.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&quot;animation&quot;)</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(animation)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: package &#39;animation&#39; was built under R version 4.1.3</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(animation)</span></code></pre></div>
 </div>
 <div id="ejemplos" class="section level2">
 <h2>Ejemplos</h2>
-<p>A continuación se muestran algunos ejemplos de uso de algunas de sus funciones, como se verá, en todos los casos hacemos uso de una función denominada <code>saveHTML()</code>, que nos permite convertir en un fichero HTML cada una de las animaciones, como parámetros debemos pasar la secuencia de imágenes que compoenen la animación y que son generadas por la función principal, y el nombre del fichero HTML que queremos generar.</p>
+<p>A continuación se muestran algunos ejemplos de uso de algunas de sus
+funciones, como se verá, en todos los casos hacemos uso de una función
+denominada <code>saveHTML()</code>, que nos permite convertir en un
+fichero HTML cada una de las animaciones, como parámetros debemos pasar
+la secuencia de imágenes que compoenen la animación y que son generadas
+por la función principal, y el nombre del fichero HTML que queremos
+generar.</p>
 <div id="método-de-bisección" class="section level3">
 <h3>Método de Bisección</h3>
-<p>La siguiente función aplica el método de Bisección para encontrar una raíz de cierta función continua <span class="math inline">\(f(x)\)</span>. Si recordamos el método, este requiere de dos puntos iniciales <span class="math inline">\(a,b\)</span> de manera que <span class="math inline">\(f(a)&gt;0\)</span> y <span class="math inline">\(f(b)&lt;0\)</span> o viceversa. De esta forma, por el teorema de Bolzano sabemos que en el intervalo <span class="math inline">\([a,b]\)</span> hay una raíz de la función.</p>
-<p>El algoritmo en cada iteración calcula el punto medio <span class="math inline">\(c\)</span> del intervalo <span class="math inline">\([a,b]\)</span> y evalúa la función en ese punto medio, si el signo es igual que <span class="math inline">\(f(a)\)</span> reemplaza <span class="math inline">\(a\)</span> por <span class="math inline">\(c\)</span> y si no al contrario. De esta manera vamos reduciendo el intervalo en que se encuentra la raíz hasta que se obtenga la raíz exacta o bien se sobrepase una cierta tolerancia.</p>
-<p>En nuestro caso vamos a probar con la función <span class="math inline">\(f(x)=x^3 - 7x -10\)</span> y vamos a usar el intervalo <span class="math inline">\([-3,5]\)</span> pues como vemos en ese intervalo se cumplen las condiciones del algoritmo y hay una raíz.</p>
+<p>La siguiente función aplica el método de Bisección para encontrar una
+raíz de cierta función continua <span class="math inline">\(f(x)\)</span>. Si recordamos el método, este
+requiere de dos puntos iniciales <span class="math inline">\(a,b\)</span> de manera que <span class="math inline">\(f(a)&gt;0\)</span> y <span class="math inline">\(f(b)&lt;0\)</span> o viceversa. De esta forma, por
+el teorema de Bolzano sabemos que en el intervalo <span class="math inline">\([a,b]\)</span> hay una raíz de la función.</p>
+<p>El algoritmo en cada iteración calcula el punto medio <span class="math inline">\(c\)</span> del intervalo <span class="math inline">\([a,b]\)</span> y evalúa la función en ese punto
+medio, si el signo es igual que <span class="math inline">\(f(a)\)</span> reemplaza <span class="math inline">\(a\)</span> por <span class="math inline">\(c\)</span> y si no al contrario. De esta manera
+vamos reduciendo el intervalo en que se encuentra la raíz hasta que se
+obtenga la raíz exacta o bien se sobrepase una cierta tolerancia.</p>
+<p>En nuestro caso vamos a probar con la función <span class="math inline">\(f(x)=x^3 - 7x -10\)</span> y vamos a usar el
+intervalo <span class="math inline">\([-3,5]\)</span> pues como vemos en
+ese intervalo se cumplen las condiciones del algoritmo y hay una
+raíz.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">=</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="dv">3</span> <span class="sc">-</span> <span class="dv">7</span> <span class="sc">*</span> x <span class="sc">-</span> <span class="dv">10</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(f, <span class="at">from =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">to=</span><span class="dv">5</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>)</span></code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
-<p>A continuación usamos la función de animation correspondiente, se trata de <code>bisection.method</code> y requiere como parámetros la función <span class="math inline">\(f\)</span> que usaremos y los valores iniciales <span class="math inline">\(a,b\)</span> del método de bisección:</p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>A continuación usamos la función de animation correspondiente, se
+trata de <code>bisection.method</code> y requiere como parámetros la
+función <span class="math inline">\(f\)</span> que usaremos y los
+valores iniciales <span class="math inline">\(a,b\)</span> del método de
+bisección:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveHTML</span>({<span class="fu">bisection.method</span>(f, <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">5</span>))</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>},<span class="at">htmlfile =</span> <span class="st">&quot;Biseccion.html&quot;</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HTML file created at: Biseccion.html</span></span></code></pre></div>
 </div>
 <div id="método-de-gradiente-descendente" class="section level3">
 <h3>Método de Gradiente Descendente</h3>
-<p>Vamos a explorar la función que permite visualizar el método para encontrar mínimos locales de funciones en dos dimensiones (en este caso) conocido como Gradiente Descendente.</p>
-<p>El método sigue la intuición de que el gradiente de una función apunta siempre a máximos locales, luego lo que hacemos es ir en la dirección contraria del gradiente para tratar de hallar mínimos locales. Este método no garantiza que el mínimo obtenido sea el mínimo global de la función (a no ser que la función sea convexa).</p>
-<p>Para ello partimos de un punto inicial aleatorio del dominio de la función, y en cada iteración nos desplazamos en la dirección que apunta el gradiente cambiado de signo dando un paso de cierto tamaño que idealmente será grande para aproximarse rápido al mínimo y luego se reducirá para ajustar con precisión dicho mínimo.</p>
+<p>Vamos a explorar la función que permite visualizar el método para
+encontrar mínimos locales de funciones en dos dimensiones (en este caso)
+conocido como Gradiente Descendente.</p>
+<p>El método sigue la intuición de que el gradiente de una función
+apunta siempre a máximos locales, luego lo que hacemos es ir en la
+dirección contraria del gradiente para tratar de hallar mínimos locales.
+Este método no garantiza que el mínimo obtenido sea el mínimo global de
+la función (a no ser que la función sea convexa).</p>
+<p>Para ello partimos de un punto inicial aleatorio del dominio de la
+función, y en cada iteración nos desplazamos en la dirección que apunta
+el gradiente cambiado de signo dando un paso de cierto tamaño que
+idealmente será grande para aproximarse rápido al mínimo y luego se
+reducirá para ajustar con precisión dicho mínimo.</p>
 <p>La función que emplearemos será:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">=</span> <span class="cf">function</span>(x, y) x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">sin</span>(y)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(pi<span class="sc">*-</span><span class="dv">2</span>,pi<span class="sc">*</span><span class="dv">2</span>,<span class="at">length.out=</span><span class="dv">100</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">seq</span>(pi<span class="sc">*-</span><span class="dv">2</span>,pi<span class="sc">*</span><span class="dv">2</span>,<span class="at">length.out=</span><span class="dv">100</span>)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">outer</span>(x<span class="sc">^</span><span class="dv">2</span>,<span class="dv">3</span><span class="sc">*</span> <span class="fu">sin</span>(y),<span class="st">`</span><span class="at">+</span><span class="st">`</span>)</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(x,y,z,<span class="at">theta =</span> <span class="dv">30</span>)</span></code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --> Como podemos apreciar en la imagen, la función tiene dos mínimos en el domino que usaremos que es <span class="math inline">\([-2\pi,2\pi] \times [-2\pi,2\pi]\)</span>.</p>
-<p>Para esta tarea usaremos la función <code>grad.desc</code>. Los parámetros que debemos pasarle son: La función que vamos a usar, el dominio en el que trabajaremos y el punto inicial, que en nuestro caso será el <span class="math inline">\((-2\pi,2)\)</span>.</p>
+<p><img src="data:image/png;base64,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" /><!-- --> Como
+podemos apreciar en la imagen, la función tiene dos mínimos en el domino
+que usaremos que es <span class="math inline">\([-2\pi,2\pi] \times
+[-2\pi,2\pi]\)</span>.</p>
+<p>Para esta tarea usaremos la función <code>grad.desc</code>. Los
+parámetros que debemos pasarle son: La función que vamos a usar, el
+dominio en el que trabajaremos y el punto inicial, que en nuestro caso
+será el <span class="math inline">\((-2\pi,2)\)</span>.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveHTML</span>({<span class="fu">grad.desc</span>(f1, pi <span class="sc">*</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>), <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span> <span class="sc">*</span> pi, <span class="dv">2</span>))</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>},<span class="at">htmlfile =</span> <span class="st">&quot;GD.html&quot;</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HTML file created at: GD.html</span></span></code></pre></div>
+</div>
+<div id="integración-de-monte-carlo" class="section level3">
+<h3>Integración de Monte Carlo</h3>
+<p>El paquete animation incluye una función que realiza la animación del
+método de integración de Monte Carlo.</p>
+<p>Este método utiliza números aleatorios para calcular el valor de
+integrales del estilo:</p>
+<p><span class="math display">\[ I = \int \limits_0^1 h(x) dx\]</span>
+Para ello, teniendo en cuenta que la función de densidad de la
+distribución uniforme en el intervalo <span class="math inline">\((0,1)\)</span> es <span class="math inline">\(f(x)=1\)</span>, podemos escribir la integral
+anterior como:</p>
+<p><span class="math display">\[ I = \int \limits_0^1 h(x) dx =
+\Bbb{E}[h(X)]\]</span></p>
+<p>Donde <span class="math inline">\(X \sim \mathcal{U}\)</span>. Al
+describirlo como una media teórica, podemos aproximarla simulando <span class="math inline">\(n\)</span> variables aleatorias uniformes <span class="math inline">\(X_1,\dots,X_n\)</span>:</p>
+<p><span class="math display">\[ I = \int \limits_0^1 h(x) dx =
+\Bbb{E}[h(X)] \approx \frac{1}{n}  \sum_{i=1}^{n}h(X_i)\]</span></p>
+<p>Lo que muestra la función <code>MC.samplemean</code> son los
+rectángulos de ancho <span class="math inline">\(\frac1n\)</span> y de
+alto <span class="math inline">\(h(x_i)\)</span>. De esta manera podemos
+comparar gráficamente la diferencia entre el valor exacto de la integral
+y la aproximación por el método de Monte Carlo.</p>
+<p>Los argumentos de la función son: la función a integrar, el número de
+puntos que se toman de la distribución uniforme, el color de los
+rectángulos y si las posiciones de los rectángulos en el eje x deben ser
+ajustadas.</p>
+<p>Esta función devuelve una lista con los números aleatorios generados,
+la función evaluada en dicho puntos, el valor de la n y el valor
+estimado de la integral.</p>
+<p>Vamos a mostrar un ejemplo con la función <span class="math inline">\(h(x) =4x^4\)</span>.</p>
+<p>Primero mostramos un gráfico de la función:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># definimos la función a integrar</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>h<span class="ot">&lt;-</span><span class="cf">function</span>(x) (<span class="dv">4</span><span class="sc">*</span>x<span class="sc">^</span><span class="dv">4</span>) <span class="sc">*</span> (x<span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;</span> x<span class="sc">&lt;</span><span class="dv">1</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># visualizamos la función en el dominio de integración16</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(h,<span class="dv">0</span>,<span class="dv">1</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="data:image/png;base64,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" alt="Función a integrar" />
+<p class="caption">
+Función a integrar
+</p>
+</div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostramos la estimación de la integral</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>montecarlo<span class="sc">$</span>est</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.7441015</span></span></code></pre></div>
+<p>Sabemos que el valor de la integral es <span class="math inline">\(\frac{4}{5}\)</span> por lo que el error relativo
+de la aproximación es de:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">abs</span>(montecarlo<span class="sc">$</span>est<span class="dv">-4</span><span class="sc">/</span><span class="dv">5</span>)<span class="sc">/</span>(<span class="dv">4</span><span class="sc">/</span><span class="dv">5</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.06987313</span></span></code></pre></div>
+<p>Podemos encontrar la animación en el archivo
+<em>MonteCarlo.html</em>.</p>
 </div>
 </div>
 
