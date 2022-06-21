@@ -44,6 +44,64 @@ library(animation)
 
 # Ejemplos
 
-## `knn.ani`
+## Clasificación usando *k-NN*
+
+*k-NN* o *k-Vecinos más cercanos* es un algoritmo de clasificación supervisado, no paramétrico. El procedimiento de este algoritmo es muy sencillo:
+
+1. Guardamos una serie de datos que servirán para clasificar futuras entradas
+   - Notar que no hay proceso de aprendizaje, solamente almacenamos los ejemplos de entrenamiento
+2. Cuando llega un ejemplo a clasificar:
+    - Miramos la clase de las $k$ clases más cercanas al ejemplo
+    - Elegimos la clase del nuevo ejemplo, normalmente por voto mayoritario (para ello, lo ideal es que $k$ sea un número impar)
+    - Con el valor de $k$ controlamos la regularización que queremos introducir en el modelo. Un valor más alto de $k$ implica una regularización mayor
+
+Para mostrar esto con un ejemplo, trabajamos con un dataset que queremos segmentar en distintos clusters. En concreto, trabajaremos con el conocido *Iris Dataset*. Nuestro objetivo es clasificar los datos en tres tipos de flores: *setosa*, *versicolor* y *virginica*. Para ello, escogeremos dos características de las cuatro disponibles:
+
+1. Sepal.Length
+2. Sepal.Width
+3. Petal.Length
+4. Petal.Width
+
+Nos quedamos con las dos primeras variables.
+
+```{r}
+# El dataset iris esta pre-cargado en R
+data <- iris
+head(data)
+
+# Nos quedamos solo con dos columnas, porque la animacion solo soporta dos
+# dimensiones
+data <- data[, c("Sepal.Length", "Sepal.Width")]
+head(data)
+```
+
+Ahora, podemos aplicar este algoritmo y guardar la visualización:
+
+Con esto, ya podemos aplicar el algoritmo que visualizaremos:
+
+```{r}
+# Nos fijaremos en los cinco vecinos más cercanos
+k <- 5
 
 
+# Establecemos la velocidad de la animacion
+ani.options(interval = 1)
+
+# Coloco la ejecucion del algoritmo en una funcion para tener un codigo limpio
+# (no poner esto en `saveHTML`) y para que no se muestre en el documento html
+# principal, sin animar
+generate_result <- function() {
+    return(kmeans.ani(
+        data,
+        k
+    ))
+}
+
+# Aplicamos el algoritmo, salvandolo en un fichero html para visualizarse
+saveHTML(
+    generate_result(),
+    htmlfile = "kNN.html"
+)
+```
+
+El resultado lo podemos visualizar en [este documento html](kN.html)

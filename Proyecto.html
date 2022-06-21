@@ -14,7 +14,7 @@
 <meta name="author" content="Sergio Quijano Rey" />
 <meta name="author" content="Alejandro Borrego Megías" />
 
-<meta name="date" content="2022-06-16" />
+<meta name="date" content="2022-06-21" />
 
 <title>Animaciones en R con el paquete animation</title>
 
@@ -339,7 +339,7 @@ animation</h1>
 <h4 class="author">Lucía Salamanca López</h4>
 <h4 class="author">Sergio Quijano Rey</h4>
 <h4 class="author">Alejandro Borrego Megías</h4>
-<h4 class="date">2022-06-16</h4>
+<h4 class="date">2022-06-21</h4>
 
 
 
@@ -367,8 +367,92 @@ cargar:</p>
 </div>
 <div id="ejemplos" class="section level1">
 <h1>Ejemplos</h1>
-<div id="knn.ani" class="section level2">
-<h2><code>knn.ani</code></h2>
+<div id="clasificación-usando-k-nn" class="section level2">
+<h2>Clasificación usando <em>k-NN</em></h2>
+<p><em>k-NN</em> o <em>k-Vecinos más cercanos</em> es un algoritmo de
+clasificación supervisado, no paramétrico. El procedimiento de este
+algoritmo es muy sencillo:</p>
+<ol style="list-style-type: decimal">
+<li>Guardamos una serie de datos que servirán para clasificar futuras
+entradas
+<ul>
+<li>Notar que no hay proceso de aprendizaje, solamente almacenamos los
+ejemplos de entrenamiento</li>
+</ul></li>
+<li>Cuando llega un ejemplo a clasificar:
+<ul>
+<li>Miramos la clase de las <span class="math inline">\(k\)</span>
+clases más cercanas al ejemplo</li>
+<li>Elegimos la clase del nuevo ejemplo, normalmente por voto
+mayoritario (para ello, lo ideal es que <span class="math inline">\(k\)</span> sea un número impar)</li>
+<li>Con el valor de <span class="math inline">\(k\)</span> controlamos
+la regularización que queremos introducir en el modelo. Un valor más
+alto de <span class="math inline">\(k\)</span> implica una
+regularización mayor</li>
+</ul></li>
+</ol>
+<p>Para mostrar esto con un ejemplo, trabajamos con un dataset que
+queremos segmentar en distintos clusters. En concreto, trabajaremos con
+el conocido <em>Iris Dataset</em>. Nuestro objetivo es clasificar los
+datos en tres tipos de flores: <em>setosa</em>, <em>versicolor</em> y
+<em>virginica</em>. Para ello, escogeremos dos características de las
+cuatro disponibles:</p>
+<ol style="list-style-type: decimal">
+<li>Sepal.Length</li>
+<li>Sepal.Width</li>
+<li>Petal.Length</li>
+<li>Petal.Width</li>
+</ol>
+<p>Nos quedamos con las dos primeras variables.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># El dataset iris esta pre-cargado en R</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> iris</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1          5.1         3.5          1.4         0.2  setosa</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2          4.9         3.0          1.4         0.2  setosa</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3          4.7         3.2          1.3         0.2  setosa</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4          4.6         3.1          1.5         0.2  setosa</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5          5.0         3.6          1.4         0.2  setosa</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6          5.4         3.9          1.7         0.4  setosa</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Nos quedamos solo con dos columnas, porque la animacion solo soporta dos</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># dimensiones</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data[, <span class="fu">c</span>(<span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;Sepal.Width&quot;</span>)]</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Sepal.Length Sepal.Width</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1          5.1         3.5</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2          4.9         3.0</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3          4.7         3.2</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4          4.6         3.1</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5          5.0         3.6</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6          5.4         3.9</span></span></code></pre></div>
+<p>Ahora, podemos aplicar este algoritmo y guardar la visualización:</p>
+<p>Con esto, ya podemos aplicar el algoritmo que visualizaremos:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Nos fijaremos en los cinco vecinos más cercanos</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Establecemos la velocidad de la animacion</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ani.options</span>(<span class="at">interval =</span> <span class="dv">1</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Coloco la ejecucion del algoritmo en una funcion para tener un codigo limpio</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># (no poner esto en `saveHTML`) y para que no se muestre en el documento html</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># principal, sin animar</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>generate_result <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">kmeans.ani</span>(</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        data,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        k</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Aplicamos el algoritmo, salvandolo en un fichero html para visualizarse</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="fu">saveHTML</span>(</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">generate_result</span>(),</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">htmlfile =</span> <span class="st">&quot;kNN.html&quot;</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HTML file created at: kNN.html</span></span></code></pre></div>
+<p>El resultado lo podemos visualizar en <a href="kN.html">este
+documento html</a></p>
 </div>
 </div>
 <div class="footnotes footnotes-end-of-document">
