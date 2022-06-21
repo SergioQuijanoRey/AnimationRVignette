@@ -75,8 +75,6 @@ data <- data[, c("Sepal.Length", "Sepal.Width")]
 head(data)
 ```
 
-Ahora, podemos aplicar este algoritmo y guardar la visualización:
-
 Con esto, ya podemos aplicar el algoritmo que visualizaremos:
 
 ```{r}
