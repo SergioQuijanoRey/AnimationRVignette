@@ -89,9 +89,9 @@ ani.options(interval = 1)
 # (no poner esto en `saveHTML`) y para que no se muestre en el documento html
 # principal, sin animar
 generate_result <- function() {
-    return(kmeans.ani(
+    return(knn.ani(
         data,
-        k
+        k <- k,
     ))
 }
 
@@ -103,3 +103,53 @@ saveHTML(
 ```
 
 El resultado lo podemos visualizar en [este documento html](kN.html)
+
+## Clusterización usando K-means
+
+> TODO -- describir el algoritmo
+
+Volvemos a trabajar con el mismo *dataset*, quedándonos con las mismas variables:
+
+```{r}
+# El dataset iris esta pre-cargado en R
+data <- iris
+head(data)
+
+# Nos quedamos solo con dos columnas, porque la animacion solo soporta dos
+# dimensiones
+data <- data[, c("Sepal.Length", "Sepal.Width")]
+head(data)
+```
+
+Aunque el algoritmo sea una algoritmo de aprendizaje no supervisado, sabemos que tenemos 3 tipos de flores, así que establecemos a 3 el número de centros:
+
+```{r}
+num_centers <- 3
+```
+
+Con esto, ya podemos aplicar el algoritmo que visualizaremos:
+
+```{r}
+
+# Establecemos la velocidad de la animacion
+ani.options(interval = 1)
+
+# Coloco la ejecucion del algoritmo en una funcion para tener un codigo limpio
+# (no poner esto en `saveHTML`) y para que no se muestre en el documento html
+# principal, sin animar
+generate_result <- function() {
+    return(kmeans.ani(
+        x = data,
+        centers <- num_centers,
+    ))
+}
+
+# Aplicamos el algoritmo, salvandolo en un fichero html para visualizarse
+saveHTML(
+    generate_result(),
+    htmlfile = "kMeans.html"
+)
+```
+
+El resultado lo podemos visualizar en [este documento html](kMeans.hmtl)
+
