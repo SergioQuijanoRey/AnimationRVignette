@@ -491,8 +491,31 @@ Función a integrar
 de la aproximación es de:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">abs</span>(montecarlo<span class="sc">$</span>est<span class="dv">-4</span><span class="sc">/</span><span class="dv">5</span>)<span class="sc">/</span>(<span class="dv">4</span><span class="sc">/</span><span class="dv">5</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.06987313</span></span></code></pre></div>
-<p>Podemos encontrar la animación en el archivo
-<em>MonteCarlo.html</em>.</p>
+<p>Podemos encontrar la animación en el archivo <a href="MonteCarlo.html">MonteCarlo.html</a>.</p>
+</div>
+<div id="moving-block" class="section level3">
+<h3>Moving block</h3>
+<p>El paquete animation incluye la función <code>moving.block</code> que
+permite mostrar un conjunto de datos como subconjuntos de éstos para así
+obtener una visión ampliada de los mismos. De otra manera, va mostrando
+los datos en pequeños subconjuntos para poder representarlos por partes
+y así ver los datos contiguos en un gráfico separado del resto,
+simulando un recorrido panorámico por la gráfica de todo el conjunto de
+datos.</p>
+<p>Como parámetros se pasan los datos como un vector numérico o una
+matriz de dos columnas, el tamaño de cada bloque, es decir, el número de
+elementos que serán representados en cada paso y la función que sirve
+para representar los datos (ej: scatterplot, plot, curve, una función
+personalizada…).</p>
+<p> </p>
+<p>Para mostrar un ejemplo vamos a hacer uso de <code>ObamaSpeech</code>
+que se encuentra dentro del paquete animation. Cada dato de este vector
+simboliza el número de palabras en cada parráfo del discurso de Obama
+tras ganar las elecciones presidenciales.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveHTML</span>({<span class="fu">moving.block</span>(<span class="at">dat =</span> ObamaSpeech, <span class="at">FUN =</span> <span class="cf">function</span>(...,<span class="at">dat =</span> dat, <span class="at">i =</span> i, <span class="at">block =</span> block) {<span class="fu">plot</span>(...,<span class="at">x =</span> i <span class="sc">+</span> <span class="dv">1</span><span class="sc">:</span>block, <span class="at">xlab =</span> <span class="st">&quot;índice del párrafo&quot;</span>, <span class="at">ylim =</span> <span class="fu">range</span>(dat), <span class="at">ylab =</span> <span class="fu">sprintf</span>(<span class="st">&quot;ObamaSpeech[%s:%s]&quot;</span>, i <span class="sc">+</span> <span class="dv">1</span>, i <span class="sc">+</span> block))}, <span class="at">type =</span> <span class="st">&quot;o&quot;</span>, <span class="at">pch =</span> <span class="dv">20</span>)},<span class="at">htmlfile =</span> <span class="st">&quot;Obama.html&quot;</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HTML file created at: Obama.html</span></span></code></pre></div>
+<p>Podemos ver la animación en el archivo <a href="./Obama.html">Obama.html</a>.</p>
 </div>
 </div>
 

@@ -141,4 +141,23 @@ Sabemos que el valor de la integral es $\frac{4}{5}$ por lo que el error relativ
 abs(montecarlo$est-4/5)/(4/5)
 ```
 
-Podemos encontrar la animación en el archivo _MonteCarlo.html_.
+Podemos encontrar la animación en el archivo [MonteCarlo.html](MonteCarlo.html).
+
+
+
+
+### Moving block
+
+El paquete animation incluye la función `moving.block` que permite mostrar un conjunto de datos como subconjuntos de éstos para así obtener una visión ampliada de los mismos. De otra manera, va mostrando los datos en pequeños subconjuntos para poder representarlos por partes y así ver los datos contiguos en un gráfico separado del resto, simulando un recorrido panorámico por la gráfica de todo el conjunto de datos.  
+
+Como parámetros se pasan los datos como un vector numérico o una matriz de dos columnas, el tamaño de cada bloque, es decir, el número de elementos que serán representados en cada paso y la función que sirve para representar los datos (ej: scatterplot, plot, curve, una función personalizada...).
+
+\ 
+
+Para mostrar un ejemplo vamos a hacer uso de `ObamaSpeech` que se encuentra dentro del paquete animation. Cada dato de este vector simboliza el número de palabras en cada parráfo del discurso de Obama tras ganar las elecciones presidenciales. 
+
+```{r,dev='png'}
+saveHTML({moving.block(dat = ObamaSpeech, FUN = function(...,dat = dat, i = i, block = block) {plot(...,x = i + 1:block, xlab = "índice del párrafo", ylim = range(dat), ylab = sprintf("ObamaSpeech[%s:%s]", i + 1, i + block))}, type = "o", pch = 20)},htmlfile = "Obama.html")
+```
+
+Podemos ver la animación en el archivo [Obama.html](./Obama.html).
