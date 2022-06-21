@@ -46,6 +46,8 @@ library(animation)
 
 ## Clasificación usando *k-NN*
 
+<!-- TODO -- este ejemplo no funciona! -->
+
 *k-NN* o *k-Vecinos más cercanos* es un algoritmo de clasificación supervisado, no paramétrico. El procedimiento de este algoritmo es muy sencillo:
 
 1. Guardamos una serie de datos que servirán para clasificar futuras entradas
