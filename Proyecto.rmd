@@ -22,12 +22,11 @@ knitr::opts_chunk$set(
 
 ## Animaciones en R
 
-
 Durante el curso hemos explorado las posibilidades de R en el ámbito de la Estadística computacional, haciendo análisis exploratorio de datos, problemas de regresión lineal, aproximación de integrales y distribuciones, etc... Además hemos explorado diversas funciones que permiten generar gráficos que ayudan a explicar y entender mejor estos procedimientos.
 
 Motivados por la gran potencia de R para la generación de gráficos decidimos explorar si también existen paquetes que permitan crear animaciones para comprender mejor algoritmos clásicos tanto de estadística como de la matemática aplicada en general. Es por ello que nuestro proyecto se basa en utilizar algunas de las funciones del paquete *animation* y valorar los resultados que se obtienen.
 
-El paquete *animation* proporciona un extenso catálogo de funciones que abarcan problemas de la teoría de probabilidad, la estadística multivariante, modelos lineales, series temporales y algoritmos de minería de datos y aprendizaje automático. La finalidad del paquete mostrar el funcionamiento de estas herramientas visualmente con una finalidad didáctica.
+El paquete *animation* proporciona un extenso catálogo de funciones que abarcan problemas de la teoría de probabilidad, la estadística multivariante, modelos lineales, series temporales y algoritmos de minería de datos y aprendizaje automático. La finalidad del paquete mostrar el funcionamiento de estas herramientas visualmente con una finalidad didáctica ^[Todas las funcionaliadades del paquete se pueden consultar en su [Documentación oficial](https://cran.r-project.org/web/packages/animation/animation.pdf)].
 
 Es importante mencionar que las animaciones no se pueden visualizar en este HTML, cada una de las funciones que usemos genera un HTML con un nombre de acuerdo a la función que permitirá ver la animación y controlar su ejecución permitiendo aumentar o disminuir la velocidad, o parar la animación en un instante determinado. Estos ficheros se entregan junto con el proyecto final.
 
