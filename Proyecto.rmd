@@ -77,6 +77,20 @@ data <- data[, c("Sepal.Length", "Sepal.Width")]
 head(data)
 ```
 
+Además, la función del paquete exige que nos quedemos con dos *datasets*, uno de entrenamiento y otro de test, así que a continuación realizamos la separación ^[He usado el siguiente código de [StackOverflow](https://stackoverflow.com/a/17200430), que he adaptado para realizar la separación]:
+
+```{r}
+# 70% para el entrenamiento, 30% para test
+train_size <- floor(0.75 * nrow(data))
+
+# Localizamos los indices para el entrenamiento
+train_ind <- sample(seq_len(nrow(data)), size = train_size)
+
+# Realizamos la separacion
+data_train <- data[train_ind, ]
+data_test <- data[-train_ind, ]
+```
+
 Con esto, ya podemos aplicar el algoritmo que visualizaremos:
 
 ```{r}
@@ -91,10 +105,11 @@ ani.options(interval = 1)
 # (no poner esto en `saveHTML`) y para que no se muestre en el documento html
 # principal, sin animar
 generate_result <- function() {
-    # TODO -- esto esta mal, hay que usar knn.ani
-    return(kmeans.ani(
-        data,
-        k <- k,
+    return(knn.ani(
+        train = data_train,
+        test = data_test,
+        k = k,
+        cl = rep(c("First"), each = train_size)
     ))
 }
 
@@ -105,7 +120,7 @@ saveHTML(
 )
 ```
 
-El resultado lo podemos visualizar en [este documento html](kN.html)
+El resultado lo podemos visualizar en [este documento html](kNN.html)
 
 ## Clusterización usando K-means
 
