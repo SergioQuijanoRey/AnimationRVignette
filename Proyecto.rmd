@@ -34,10 +34,13 @@ Es importante mencionar que las animaciones no se pueden visualizar en este HTML
 ## Instalación del paquete *animation*
 
 Para la instalación del paquete lo hacemos a través de **CRAN** como con el resto de paquetes que hemos empleado durante el curso.
-```{r}
-#install.packages("animation")
 
+```{r eval = FALSE}
+install.packages("animation")
 ```
+
+Una vez hecho esto, ya podemos cargar la librería en el proyecto.
+
 ```{r}
 library(animation)
 ```
