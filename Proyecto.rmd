@@ -91,6 +91,13 @@ data_train <- data[train_ind, ]
 data_test <- data[-train_ind, ]
 ```
 
+También necesito las clases de los ejemplos de entrenamiento por separado, así que las tomamos a continuación. Notar que no las podíamos tomar antes, porque hemos permutado las filas del dataset para realizar la división en entrenamiento y test.
+
+```{r}
+training_classes <- iris[train_ind, ]$Species
+head(training_classes, 10)
+```
+
 Con esto, ya podemos aplicar el algoritmo que visualizaremos:
 
 ```{r}
@@ -109,7 +116,7 @@ generate_result <- function() {
         train = data_train,
         test = data_test,
         k = k,
-        cl = rep(c("First"), each = train_size)
+        cl = iris[train_ind, ]$Species
     ))
 }
 
