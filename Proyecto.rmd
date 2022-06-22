@@ -1,14 +1,18 @@
 ---
 title: "Animaciones en R con el paquete animation"
-author: "Lucía Salamanca López, Sergio Quijano Rey, Alejandro Borrego Megías"
+author:
+    - "Lucía Salamanca López"
+    - "Sergio Quijano Rey"
+    - "Alejandro Borrego Megías"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Animaciones en R con el apquete animation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
+<!-- Este codigo es necesario para inicializar el documento tipo Vignette -->
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -19,7 +23,7 @@ knitr::opts_chunk$set(
 ## Animaciones en R
 
 
-Durante el curso hemos explorado las posibilidades de R en el ámbito de la Estadística computacional, haciendo análisis exploratorio de datos, problemas de regresión lineal, aproximación de integrales y distribuciones, etc... Además hemos explorado diversas funciones que permiten generar gráficos que ayudan a explicar y entender mejor estos procedimientos. 
+Durante el curso hemos explorado las posibilidades de R en el ámbito de la Estadística computacional, haciendo análisis exploratorio de datos, problemas de regresión lineal, aproximación de integrales y distribuciones, etc... Además hemos explorado diversas funciones que permiten generar gráficos que ayudan a explicar y entender mejor estos procedimientos.
 
 Motivados por la gran potencia de R para la generación de gráficos decidimos explorar si también existen paquetes que permitan crear animaciones para comprender mejor algoritmos clásicos tanto de estadística como de la matemática aplicada en general. Es por ello que nuestro proyecto se basa en utilizar algunas de las funciones del paquete *animation* y valorar los resultados que se obtienen.
 
@@ -29,7 +33,7 @@ Es importante mencionar que las animaciones no se pueden visualizar en este HTML
 
 ## Instalación del paquete *animation*
 
-Para la instalación del paquete lo hacemos a través de **CRAN** como con el resto de paquetes que hemos empleado durante el curso.  
+Para la instalación del paquete lo hacemos a través de **CRAN** como con el resto de paquetes que hemos empleado durante el curso.
 ```{r}
 #install.packages("animation")
 
@@ -39,9 +43,9 @@ library(animation)
 ```
 
 
-## Ejemplos 
+## Ejemplos
 
-A continuación se muestran algunos ejemplos de uso de algunas de sus funciones, como se verá, en todos los casos hacemos uso de una función denominada `saveHTML()`, que nos permite convertir en un fichero HTML cada una de las animaciones, como parámetros debemos pasar la secuencia de imágenes que compoenen la animación y que son generadas por la función principal, y el nombre del fichero HTML que queremos generar. 
+A continuación se muestran algunos ejemplos de uso de algunas de sus funciones, como se verá, en todos los casos hacemos uso de una función denominada `saveHTML()`, que nos permite convertir en un fichero HTML cada una de las animaciones, como parámetros debemos pasar la secuencia de imágenes que compoenen la animación y que son generadas por la función principal, y el nombre del fichero HTML que queremos generar.
 
 ### Método de Bisección
 
@@ -65,15 +69,15 @@ saveHTML({bisection.method(f, c(-3, 5))
 ```
 
 
-### Método de Gradiente Descendente 
+### Método de Gradiente Descendente
 
-Vamos a explorar la función que permite visualizar el método para encontrar mínimos locales de funciones en dos dimensiones (en este caso) conocido como Gradiente Descendente. 
+Vamos a explorar la función que permite visualizar el método para encontrar mínimos locales de funciones en dos dimensiones (en este caso) conocido como Gradiente Descendente.
 
 El método sigue la intuición de que el gradiente de una función apunta siempre a máximos locales, luego lo que hacemos es ir en la dirección contraria del gradiente para tratar de hallar mínimos locales. Este método no garantiza que el mínimo obtenido sea el mínimo global de la función (a no ser que la función sea convexa).
 
 Para ello partimos de un punto inicial aleatorio del dominio de la función, y en cada iteración nos desplazamos en la dirección que apunta el gradiente cambiado de signo dando un paso de cierto tamaño que idealmente será grande para aproximarse rápido al mínimo y luego se reducirá para ajustar con precisión dicho mínimo.
 
-La función que emplearemos será: 
+La función que emplearemos será:
 
 ```{r, dev='png'}
 f1 = function(x, y) x^2 + 3 * sin(y)
@@ -103,16 +107,16 @@ Para ello, teniendo en cuenta que la función de densidad de la distribución un
 
 $$ I = \int \limits_0^1 h(x) dx = \Bbb{E}[h(X)]$$
 
-Donde $X \sim \mathcal{U}$. Al describirlo como una media teórica, podemos aproximarla simulando $n$ variables aleatorias uniformes $X_1,\dots,X_n$: 
+Donde $X \sim \mathcal{U}$. Al describirlo como una media teórica, podemos aproximarla simulando $n$ variables aleatorias uniformes $X_1,\dots,X_n$:
 
 $$ I = \int \limits_0^1 h(x) dx = \Bbb{E}[h(X)] \approx \frac{1}{n}  \sum_{i=1}^{n}h(X_i)$$
 
 Lo que muestra la función `MC.samplemean` son los rectángulos de ancho $\frac1n$ y de alto $h(x_i)$. De esta manera podemos comparar gráficamente la diferencia entre el valor exacto de la integral y la aproximación por el método de Monte Carlo.
 
 
-Los argumentos de la función son: la función a integrar, el número de puntos que se toman de la distribución uniforme, el color de los rectángulos y si las posiciones de los rectángulos en el eje x deben ser ajustadas. 
+Los argumentos de la función son: la función a integrar, el número de puntos que se toman de la distribución uniforme, el color de los rectángulos y si las posiciones de los rectángulos en el eje x deben ser ajustadas.
 
-Esta función devuelve una lista con los números aleatorios generados, la función evaluada en dicho puntos, el valor de la n y el valor estimado de la integral. 
+Esta función devuelve una lista con los números aleatorios generados, la función evaluada en dicho puntos, el valor de la n y el valor estimado de la integral.
 
 Vamos a mostrar un ejemplo con la función $h(x) =4x^4$.
 
@@ -148,16 +152,157 @@ Podemos encontrar la animación en el archivo [MonteCarlo.html](MonteCarlo.html)
 
 ### Moving block
 
-El paquete animation incluye la función `moving.block` que permite mostrar un conjunto de datos como subconjuntos de éstos para así obtener una visión ampliada de los mismos. De otra manera, va mostrando los datos en pequeños subconjuntos para poder representarlos por partes y así ver los datos contiguos en un gráfico separado del resto, simulando un recorrido panorámico por la gráfica de todo el conjunto de datos.  
+El paquete animation incluye la función `moving.block` que permite mostrar un conjunto de datos como subconjuntos de éstos para así obtener una visión ampliada de los mismos. De otra manera, va mostrando los datos en pequeños subconjuntos para poder representarlos por partes y así ver los datos contiguos en un gráfico separado del resto, simulando un recorrido panorámico por la gráfica de todo el conjunto de datos.
 
 Como parámetros se pasan los datos como un vector numérico o una matriz de dos columnas, el tamaño de cada bloque, es decir, el número de elementos que serán representados en cada paso y la función que sirve para representar los datos (ej: scatterplot, plot, curve, una función personalizada...).
 
-\ 
+\
 
-Para mostrar un ejemplo vamos a hacer uso de `ObamaSpeech` que se encuentra dentro del paquete animation. Cada dato de este vector simboliza el número de palabras en cada parráfo del discurso de Obama tras ganar las elecciones presidenciales. 
+Para mostrar un ejemplo vamos a hacer uso de `ObamaSpeech` que se encuentra dentro del paquete animation. Cada dato de este vector simboliza el número de palabras en cada parráfo del discurso de Obama tras ganar las elecciones presidenciales.
 
 ```{r,dev='png'}
 saveHTML({moving.block(dat = ObamaSpeech, FUN = function(...,dat = dat, i = i, block = block) {plot(...,x = i + 1:block, xlab = "índice del párrafo", ylim = range(dat), ylab = sprintf("ObamaSpeech[%s:%s]", i + 1, i + block))}, type = "o", pch = 20)},htmlfile = "Obama.html")
 ```
 
 Podemos ver la animación en el archivo [Obama.html](./Obama.html).
+
+## Clasificación usando *k-NN*
+
+*k-NN* o *k-Vecinos más cercanos* es un algoritmo de clasificación supervisado, no paramétrico. El procedimiento de este algoritmo es muy sencillo:
+
+1. Guardamos una serie de datos que servirán para clasificar futuras entradas
+   - Notar que no hay proceso de aprendizaje, solamente almacenamos los ejemplos de entrenamiento
+2. Cuando llega un ejemplo a clasificar:
+    - Miramos la clase de las $k$ clases más cercanas al ejemplo
+    - Elegimos la clase del nuevo ejemplo, normalmente por voto mayoritario (para ello, lo ideal es que $k$ sea un número impar)
+    - Con el valor de $k$ controlamos la regularización que queremos introducir en el modelo. Un valor más alto de $k$ implica una regularización mayor
+
+Para mostrar esto con un ejemplo, trabajamos con un dataset que queremos segmentar en distintos clusters. En concreto, trabajaremos con el conocido *Iris Dataset*. Nuestro objetivo es clasificar los datos en tres tipos de flores: *setosa*, *versicolor* y *virginica*. Para ello, escogeremos dos características de las cuatro disponibles:
+
+1. Sepal.Length
+2. Sepal.Width
+3. Petal.Length
+4. Petal.Width
+
+Nos quedamos con las dos primeras variables.
+
+```{r}
+# El dataset iris esta pre-cargado en R
+data <- iris
+head(data)
+
+# Nos quedamos solo con dos columnas, porque la animacion solo soporta dos
+# dimensiones
+data <- data[, c("Sepal.Length", "Sepal.Width")]
+head(data)
+```
+
+Además, la función del paquete exige que nos quedemos con dos *datasets*, uno de entrenamiento y otro de test, así que a continuación realizamos la separación ^[He usado el siguiente código de [StackOverflow](https://stackoverflow.com/a/17200430), que he adaptado para realizar la separación]:
+
+```{r}
+# 70% para el entrenamiento, 30% para test
+train_size <- floor(0.75 * nrow(data))
+
+# Localizamos los indices para el entrenamiento
+train_ind <- sample(seq_len(nrow(data)), size = train_size)
+
+# Realizamos la separacion
+data_train <- data[train_ind, ]
+data_test <- data[-train_ind, ]
+```
+
+También necesito las clases de los ejemplos de entrenamiento por separado, así que las tomamos a continuación. Notar que no las podíamos tomar antes, porque hemos permutado las filas del dataset para realizar la división en entrenamiento y test.
+
+```{r}
+training_classes <- iris[train_ind, ]$Species
+head(training_classes, 10)
+```
+
+Con esto, ya podemos aplicar el algoritmo que visualizaremos:
+
+```{r}
+# Nos fijaremos en los cinco vecinos más cercanos
+k <- 5
+
+
+# Establecemos la velocidad de la animacion
+ani.options(interval = 1)
+
+# Coloco la ejecucion del algoritmo en una funcion para tener un codigo limpio
+# (no poner esto en `saveHTML`) y para que no se muestre en el documento html
+# principal, sin animar
+generate_result <- function() {
+    return(knn.ani(
+        train = data_train,
+        test = data_test,
+        k = k,
+        cl = iris[train_ind, ]$Species
+    ))
+}
+
+# Aplicamos el algoritmo, salvandolo en un fichero html para visualizarse
+saveHTML(
+    generate_result(),
+    htmlfile = "kNN.html"
+)
+```
+
+El resultado lo podemos visualizar en [este documento html](kNN.html)
+
+## Clusterización usando K-means
+
+*K-means* es un algoritmo de clusterización. El objetivo del algoritmo es dividir $n$ ejemplos en $k$ clusters. El algoritmo minimiza la media de las distancias euclídeas de los ejemplos en cada cluster. El proceso del algoritmo es el siguiente:
+
+1. Se generan $k$ centroides aleatorios
+2. Se clasifican todos los ejemplos usando los $k$ centroides
+3. Una vez que tenemos todos los ejemplos clasificados, se calculan los nuevos centroides usando los ejemplos de cada cluster
+4. Si los centroides no han cambiado, hemos terminado. En otro caso, volvemos al paso 2
+
+Por tanto, estamos hablando de un algoritmo de aprendizaje no supervisado, puesto que en ningún momento estamos usando la información de la clase a la que pertenece cada ejemplo.
+
+Cuando llega un nuevo ejemplo a clasificar, lo que hacemos es asignar el cluster cuyo centroide esté más cercano. Esto es ventajoso porque a la hora de realizar inferencias con el modelo, solo tenemos que almacenar los centroides (que actúan como prototipos del cluster) y no todos los ejemplos de entrenamiento, como hemos comentado que pasaba en *k-NN*.
+
+Volvemos a trabajar con el mismo *dataset*, quedándonos con las mismas variables:
+
+```{r}
+# El dataset iris esta pre-cargado en R
+data <- iris
+head(data)
+
+# Nos quedamos solo con dos columnas, porque la animacion solo soporta dos
+# dimensiones
+data <- data[, c("Sepal.Length", "Sepal.Width")]
+head(data)
+```
+
+Aunque el algoritmo sea un algoritmo de aprendizaje no supervisado, sabemos que tenemos 3 tipos de flores, así que establecemos a 3 el número de centros:
+
+```{r}
+num_centers <- 3
+```
+
+Con esto, ya podemos aplicar el algoritmo que visualizaremos:
+
+```{r}
+
+# Establecemos la velocidad de la animacion
+ani.options(interval = 1)
+
+# Coloco la ejecucion del algoritmo en una funcion para tener un codigo limpio
+# (no poner esto en `saveHTML`) y para que no se muestre en el documento html
+# principal, sin animar
+generate_result <- function() {
+    return(kmeans.ani(
+        x = data,
+        centers <- num_centers,
+    ))
+}
+
+# Aplicamos el algoritmo, salvandolo en un fichero html para visualizarse
+saveHTML(
+    generate_result(),
+    htmlfile = "kMeans.html"
+)
+```
+
+El resultado lo podemos visualizar en [este documento html](kMeans.html)
