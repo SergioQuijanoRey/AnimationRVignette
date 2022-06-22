@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Animaciones en R
+# Animaciones en R
 
 Durante el curso hemos explorado las posibilidades de R en el ámbito de la Estadística computacional, haciendo análisis exploratorio de datos, problemas de regresión lineal, aproximación de integrales y distribuciones, etc... Además hemos explorado diversas funciones que permiten generar gráficos que ayudan a explicar y entender mejor estos procedimientos.
 
@@ -30,7 +30,7 @@ El paquete *animation* proporciona un extenso catálogo de funciones que abarcan
 
 Es importante mencionar que las animaciones no se pueden visualizar en este HTML, cada una de las funciones que usemos genera un HTML con un nombre de acuerdo a la función que permitirá ver la animación y controlar su ejecución permitiendo aumentar o disminuir la velocidad, o parar la animación en un instante determinado. Estos ficheros se entregan junto con el proyecto final.
 
-## Instalación del paquete *animation*
+# Instalación del paquete *animation*
 
 Para la instalación del paquete lo hacemos a través de **CRAN** como con el resto de paquetes que hemos empleado durante el curso.
 
@@ -44,12 +44,11 @@ Una vez hecho esto, ya podemos cargar la librería en el proyecto.
 library(animation)
 ```
 
-
-## Ejemplos
+# Ejemplos
 
 A continuación se muestran algunos ejemplos de uso de algunas de sus funciones, como se verá, en todos los casos hacemos uso de una función denominada `saveHTML()`, que nos permite convertir en un fichero HTML cada una de las animaciones, como parámetros debemos pasar la secuencia de imágenes que compoenen la animación y que son generadas por la función principal, y el nombre del fichero HTML que queremos generar.
 
-### Método de Bisección
+## Método de Bisección
 
 La siguiente función aplica el método de Bisección para encontrar una raíz de cierta función continua $f(x)$. Si recordamos el método, este requiere de dos puntos iniciales $a,b$ de manera que $f(a)>0$ y $f(b)<0$ o viceversa. De esta forma, por el teorema de Bolzano sabemos que en el intervalo $[a,b]$ hay una raíz de la función.
 
@@ -64,14 +63,14 @@ curve(f, from = -3, to=5)
 abline(h=0)
 ```
 
-A continuación usamos la función de animation correspondiente, se trata de `bisection.method` y requiere como parámetros la función $f$ que usaremos y los valores iniciales $a,b$ del método de bisección:
+A continuación usamos la función de `animation` correspondiente, se trata de `bisection.method` y requiere como parámetros la función $f$ que usaremos y los valores iniciales $a,b$ del método de bisección:
+
 ```{r, dev='png'}
 saveHTML({bisection.method(f, c(-3, 5))
 },htmlfile = "Biseccion.html")
 ```
 
-
-### Método de Gradiente Descendente
+## Método de Gradiente Descendente
 
 Vamos a explorar la función que permite visualizar el método para encontrar mínimos locales de funciones en dos dimensiones (en este caso) conocido como Gradiente Descendente.
 
@@ -88,6 +87,7 @@ y <- seq(pi*-2,pi*2,length.out=100)
 z <- outer(x^2,3* sin(y),`+`)
 persp(x,y,z,theta = 30)
 ```
+
 Como podemos apreciar en la imagen, la función tiene dos mínimos en el domino que usaremos que es $[-2\pi,2\pi] \times [-2\pi,2\pi]$.
 
 Para esta tarea usaremos la función `grad.desc`. Los parámetros que debemos pasarle son: La función que vamos a usar, el dominio en el que trabajaremos y el punto inicial, que en nuestro caso será el $(-2\pi,2)$.
@@ -97,10 +97,9 @@ saveHTML({grad.desc(f1, pi * c(-2, -2, 2, 2), c(-2 * pi, 2))
 },htmlfile = "GD.html")
 ```
 
+## Integración de Monte Carlo
 
-### Integración de Monte Carlo
-
-El paquete animation incluye una función que realiza la animación del método de integración de Monte Carlo.
+El paquete `animation` incluye una función que realiza la animación del método de integración de Monte Carlo.
 
 Este método utiliza números aleatorios para calcular el valor de integrales del estilo:
 
@@ -114,7 +113,6 @@ Donde $X \sim \mathcal{U}$. Al describirlo como una media teórica, podemos apro
 $$ I = \int \limits_0^1 h(x) dx = \Bbb{E}[h(X)] \approx \frac{1}{n}  \sum_{i=1}^{n}h(X_i)$$
 
 Lo que muestra la función `MC.samplemean` son los rectángulos de ancho $\frac1n$ y de alto $h(x_i)$. De esta manera podemos comparar gráficamente la diferencia entre el valor exacto de la integral y la aproximación por el método de Monte Carlo.
-
 
 Los argumentos de la función son: la función a integrar, el número de puntos que se toman de la distribución uniforme, el color de los rectángulos y si las posiciones de los rectángulos en el eje x deben ser ajustadas.
 
@@ -149,12 +147,9 @@ abs(montecarlo$est-4/5)/(4/5)
 
 Podemos encontrar la animación en el archivo [MonteCarlo.html](MonteCarlo.html).
 
+## Moving block
 
-
-
-### Moving block
-
-El paquete animation incluye la función `moving.block` que permite mostrar un conjunto de datos como subconjuntos de éstos para así obtener una visión ampliada de los mismos. De otra manera, va mostrando los datos en pequeños subconjuntos para poder representarlos por partes y así ver los datos contiguos en un gráfico separado del resto, simulando un recorrido panorámico por la gráfica de todo el conjunto de datos.
+El paquete `animation` incluye la función `moving.block` que permite mostrar un conjunto de datos como subconjuntos de éstos para así obtener una visión ampliada de los mismos. De otra manera, va mostrando los datos en pequeños subconjuntos para poder representarlos por partes y así ver los datos contiguos en un gráfico separado del resto, simulando un recorrido panorámico por la gráfica de todo el conjunto de datos.
 
 Como parámetros se pasan los datos como un vector numérico o una matriz de dos columnas, el tamaño de cada bloque, es decir, el número de elementos que serán representados en cada paso y la función que sirve para representar los datos (ej: scatterplot, plot, curve, una función personalizada...).
 
