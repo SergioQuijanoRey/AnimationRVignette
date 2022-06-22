@@ -91,7 +91,8 @@ ani.options(interval = 1)
 # (no poner esto en `saveHTML`) y para que no se muestre en el documento html
 # principal, sin animar
 generate_result <- function() {
-    return(knn.ani(
+    # TODO -- esto esta mal, hay que usar knn.ani
+    return(kmeans.ani(
         data,
         k <- k,
     ))
@@ -108,7 +109,16 @@ El resultado lo podemos visualizar en [este documento html](kN.html)
 
 ## Clusterización usando K-means
 
-> TODO -- describir el algoritmo
+*K-means* es un algoritmo de clusterización. El objetivo del algoritmo es dividir $n$ ejemplos en $k$ clusters. El algoritmo minimiza la media de las distancias euclídeas de los ejemplos en cada cluster. El proceso del algoritmo es el siguiente:
+
+1. Se generan $k$ centroides aleatorios
+2. Se clasifican todos los ejemplos usando los $k$ centroides
+3. Una vez que tenemos todos los ejemplos clasificados, se calculan los nuevos centroides usando los ejemplos de cada cluster
+4. Si los centroides no han cambiado, hemos terminado. En otro caso, volvemos al paso 2
+
+Por tanto, estamos hablando de un algoritmo de aprendizaje no supervisado, puesto que en ningún momento estamos usando la información de la clase a la que pertenece cada ejemplo.
+
+Cuando llega un nuevo ejemplo a clasificar, lo que hacemos es asignar el cluster cuyo centroide esté más cercano. Esto es ventajoso porque a la hora de realizar inferencias con el modelo, solo tenemos que almacenar los centroides (que actúan como prototipos del cluster) y no todos los ejemplos de entrenamiento, como hemos comentado que pasaba en *k-NN*.
 
 Volvemos a trabajar con el mismo *dataset*, quedándonos con las mismas variables:
 
@@ -123,7 +133,7 @@ data <- data[, c("Sepal.Length", "Sepal.Width")]
 head(data)
 ```
 
-Aunque el algoritmo sea una algoritmo de aprendizaje no supervisado, sabemos que tenemos 3 tipos de flores, así que establecemos a 3 el número de centros:
+Aunque el algoritmo sea un algoritmo de aprendizaje no supervisado, sabemos que tenemos 3 tipos de flores, así que establecemos a 3 el número de centros:
 
 ```{r}
 num_centers <- 3
@@ -153,5 +163,5 @@ saveHTML(
 )
 ```
 
-El resultado lo podemos visualizar en [este documento html](kMeans.hmtl)
+El resultado lo podemos visualizar en [este documento html](kMeans.html)
 
