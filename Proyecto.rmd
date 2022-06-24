@@ -70,6 +70,8 @@ saveHTML({bisection.method(f, c(-3, 5))
 },htmlfile = "Biseccion.html")
 ```
 
+En el fichero [Biseccion.html](Biseccion.html) se puede encontrar la animación guardada.
+
 ## Método de Gradiente Descendente
 
 Vamos a explorar la función que permite visualizar el método para encontrar mínimos locales de funciones en dos dimensiones (en este caso) conocido como Gradiente Descendente.
@@ -96,6 +98,8 @@ Para esta tarea usaremos la función `grad.desc`. Los parámetros que debemos pa
 saveHTML({grad.desc(f1, pi * c(-2, -2, 2, 2), c(-2 * pi, 2))
 },htmlfile = "GD.html")
 ```
+
+En el fichero [GD.html](GD.html) se puede encontrar la animación guardada.
 
 ## Integración de Monte Carlo
 
