@@ -34,6 +34,12 @@ Es importante mencionar que las animaciones no se pueden visualizar en este HTML
 
 El paquete falla cuando en la instrucción `saveHTML` no indicamos tanto un nombre para las imágenes único como un directorio unico para guardar estas imágenes. Este no lo hemos encontrado documentado, así que lo mostramos en esta nota para evitar que el lector repita el mismo fallo, que es bastante complicado de *trackear*.
 
+
+Además, no podemos subir el `HTML`, porque las imágenes de las animaciones pesan demasiado, por lo que:
+
+- Subimos el `.rmd` que permite generar el documento `html`
+- En nuestro [repositorio de Github](https://github.com/SergioQuijanoRey/AnimationRVignette) tenemos almacenados todos los archivos, incluso las imágenes, con todo compilado para ser visualizado directamente
+
 # Instalación del paquete *animation*
 
 Para la instalación del paquete lo hacemos a través de **CRAN** como con el resto de paquetes que hemos empleado durante el curso.
