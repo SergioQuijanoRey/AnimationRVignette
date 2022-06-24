@@ -134,8 +134,8 @@ curve(h,0,1)
 ```
 ```{r,dev='png', include = FALSE}
 set.seed(1)
-montecarlo<-MC.samplemean(FUN = h,adj.x = FALSE, col.rect = c(rgb(0, 0, 0, 0.3), rgb(1, 0, 0)), border = NA, n=60)
-saveHTML({montecarlo},htmlfile = "MonteCarlo.html", img.name = "montecarlo", imgdir = "images/montecarlo")
+montecarlo <-function() {return(MC.samplemean(FUN = h,adj.x = FALSE, col.rect = c(rgb(0, 0, 0, 0.3), rgb(1, 0, 0)), border = NA, n=60))}
+saveHTML(montecarlo(), htmlfile = "MonteCarlo.html", img.name = "montecarlo", imgdir = "images/montecarlo")
 ```
 
 ```{r}
