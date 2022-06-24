@@ -30,6 +30,10 @@ El paquete *animation* proporciona un extenso catálogo de funciones que abarcan
 
 Es importante mencionar que las animaciones no se pueden visualizar en este HTML, cada una de las funciones que usemos genera un HTML con un nombre de acuerdo a la función que permitirá ver la animación y controlar su ejecución permitiendo aumentar o disminuir la velocidad, o parar la animación en un instante determinado. Estos ficheros se entregan junto con el proyecto final.
 
+# Nota previa
+
+El paquete falla cuando en la instrucción `saveHTML` no indicamos tanto un nombre para las imágenes único como un directorio unico para guardar estas imágenes. Este no lo hemos encontrado documentado, así que lo mostramos en esta nota para evitar que el lector repita el mismo fallo, que es bastante complicado de *trackear*.
+
 # Instalación del paquete *animation*
 
 Para la instalación del paquete lo hacemos a través de **CRAN** como con el resto de paquetes que hemos empleado durante el curso.
@@ -132,10 +136,23 @@ h<-function(x) (4*x^4) * (x>0 & x<1)
 # visualizamos la función en el dominio de integración16
 curve(h,0,1)
 ```
+
+Ahora generamos y guardamos la animación:
+
 ```{r,dev='png', include = FALSE}
 set.seed(1)
-montecarlo <-function() {return(MC.samplemean(FUN = h,adj.x = FALSE, col.rect = c(rgb(0, 0, 0, 0.3), rgb(1, 0, 0)), border = NA, n=60))}
-saveHTML(montecarlo(), htmlfile = "MonteCarlo.html", img.name = "montecarlo", imgdir = "images/montecarlo")
+generate_result <- function() {
+    return(
+        MC.samplemean(FUN = h,adj.x = FALSE, col.rect = c(rgb(0, 0, 0, 0.3), rgb(1, 0, 0)), border = NA, n=60)
+    )
+}
+saveHTML(generate_result(), htmlfile = "MonteCarlo.html", img.name = "montecarlo", imgdir = "images/montecarlo")
+```
+
+Guardo el resultado de la computación y mostramos ciertos valores numéricos:
+
+```{r fig.show='hide'}
+montecarlo <- generate_result()
 ```
 
 ```{r}
