@@ -67,7 +67,7 @@ A continuación usamos la función de `animation` correspondiente, se trata de `
 
 ```{r, dev='png'}
 saveHTML({bisection.method(f, c(-3, 5))
-},htmlfile = "Biseccion.html")
+},htmlfile = "Biseccion.html", img.name = "biseccion")
 ```
 
 En el fichero [Biseccion.html](Biseccion.html) se puede encontrar la animación guardada.
@@ -96,7 +96,7 @@ Para esta tarea usaremos la función `grad.desc`. Los parámetros que debemos pa
 
 ```{r, dev='png'}
 saveHTML({grad.desc(f1, pi * c(-2, -2, 2, 2), c(-2 * pi, 2))
-},htmlfile = "GD.html")
+},htmlfile = "GD.html", img.name = "gradiente_descendiente")
 ```
 
 En el fichero [GD.html](GD.html) se puede encontrar la animación guardada.
@@ -135,7 +135,7 @@ curve(h,0,1)
 ```{r,dev='png', include = FALSE}
 set.seed(1)
 montecarlo<-MC.samplemean(FUN = h,adj.x = FALSE, col.rect = c(rgb(0, 0, 0, 0.3), rgb(1, 0, 0)), border = NA, n=60)
-saveHTML({montecarlo},htmlfile = "MonteCarlo.html")
+saveHTML({montecarlo},htmlfile = "MonteCarlo.html", img.name = "montecarlo")
 ```
 
 ```{r}
@@ -162,7 +162,7 @@ Como parámetros se pasan los datos como un vector numérico o una matriz de dos
 Para mostrar un ejemplo vamos a hacer uso de `ObamaSpeech` que se encuentra dentro del paquete animation. Cada dato de este vector simboliza el número de palabras en cada parráfo del discurso de Obama tras ganar las elecciones presidenciales.
 
 ```{r,dev='png'}
-saveHTML({moving.block(dat = ObamaSpeech, FUN = function(...,dat = dat, i = i, block = block) {plot(...,x = i + 1:block, xlab = "índice del párrafo", ylim = range(dat), ylab = sprintf("ObamaSpeech[%s:%s]", i + 1, i + block))}, type = "o", pch = 20)},htmlfile = "Obama.html")
+saveHTML({moving.block(dat = ObamaSpeech, FUN = function(...,dat = dat, i = i, block = block) {plot(...,x = i + 1:block, xlab = "índice del párrafo", ylim = range(dat), ylab = sprintf("ObamaSpeech[%s:%s]", i + 1, i + block))}, type = "o", pch = 20)},htmlfile = "Obama.html", img.name = "Obama")
 ```
 
 Podemos ver la animación en el archivo [Obama.html](./Obama.html).
@@ -244,7 +244,8 @@ generate_result <- function() {
 # Aplicamos el algoritmo, salvandolo en un fichero html para visualizarse
 saveHTML(
     generate_result(),
-    htmlfile = "kNN.html"
+    htmlfile = "kNN.html",
+    img.name = "k_nn"
 )
 ```
 
@@ -302,7 +303,8 @@ generate_result <- function() {
 # Aplicamos el algoritmo, salvandolo en un fichero html para visualizarse
 saveHTML(
     generate_result(),
-    htmlfile = "kMeans.html"
+    htmlfile = "kMeans.html",
+    img.name = "k_means"
 )
 ```
 
