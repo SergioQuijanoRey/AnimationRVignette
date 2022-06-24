@@ -412,7 +412,7 @@ correspondiente, se trata de <code>bisection.method</code> y requiere
 como parámetros la función <span class="math inline">\(f\)</span> que
 usaremos y los valores iniciales <span class="math inline">\(a,b\)</span> del método de bisección:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveHTML</span>({<span class="fu">bisection.method</span>(f, <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">5</span>))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>},<span class="at">htmlfile =</span> <span class="st">&quot;Biseccion.html&quot;</span>, <span class="at">img.name =</span> <span class="st">&quot;biseccion&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>},<span class="at">htmlfile =</span> <span class="st">&quot;Biseccion.html&quot;</span>, <span class="at">img.name =</span> <span class="st">&quot;biseccion&quot;</span>, <span class="at">imgdir =</span> <span class="st">&quot;images/biseccion&quot;</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HTML file created at: Biseccion.html</span></span></code></pre></div>
 <p>En el fichero <a href="Biseccion.html">Biseccion.html</a> se puede
 encontrar la animación guardada.</p>
@@ -447,7 +447,7 @@ parámetros que debemos pasarle son: La función que vamos a usar, el
 dominio en el que trabajaremos y el punto inicial, que en nuestro caso
 será el <span class="math inline">\((-2\pi,2)\)</span>.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveHTML</span>({<span class="fu">grad.desc</span>(f1, pi <span class="sc">*</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>), <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span> <span class="sc">*</span> pi, <span class="dv">2</span>))</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>},<span class="at">htmlfile =</span> <span class="st">&quot;GD.html&quot;</span>, <span class="at">img.name =</span> <span class="st">&quot;gradiente_descendiente&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>},<span class="at">htmlfile =</span> <span class="st">&quot;GD.html&quot;</span>, <span class="at">img.name =</span> <span class="st">&quot;gradiente_descendiente&quot;</span>, <span class="at">imgdir =</span> <span class="st">&quot;images/gradiente_descendiente&quot;</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HTML file created at: GD.html</span></span></code></pre></div>
 <p>En el fichero <a href="GD.html">GD.html</a> se puede encontrar la
 animación guardada.</p>
@@ -521,7 +521,7 @@ personalizada…).</p>
 que se encuentra dentro del paquete animation. Cada dato de este vector
 simboliza el número de palabras en cada parráfo del discurso de Obama
 tras ganar las elecciones presidenciales.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveHTML</span>({<span class="fu">moving.block</span>(<span class="at">dat =</span> ObamaSpeech, <span class="at">FUN =</span> <span class="cf">function</span>(...,<span class="at">dat =</span> dat, <span class="at">i =</span> i, <span class="at">block =</span> block) {<span class="fu">plot</span>(...,<span class="at">x =</span> i <span class="sc">+</span> <span class="dv">1</span><span class="sc">:</span>block, <span class="at">xlab =</span> <span class="st">&quot;índice del párrafo&quot;</span>, <span class="at">ylim =</span> <span class="fu">range</span>(dat), <span class="at">ylab =</span> <span class="fu">sprintf</span>(<span class="st">&quot;ObamaSpeech[%s:%s]&quot;</span>, i <span class="sc">+</span> <span class="dv">1</span>, i <span class="sc">+</span> block))}, <span class="at">type =</span> <span class="st">&quot;o&quot;</span>, <span class="at">pch =</span> <span class="dv">20</span>)},<span class="at">htmlfile =</span> <span class="st">&quot;Obama.html&quot;</span>, <span class="at">img.name =</span> <span class="st">&quot;Obama&quot;</span>)</span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveHTML</span>({<span class="fu">moving.block</span>(<span class="at">dat =</span> ObamaSpeech, <span class="at">FUN =</span> <span class="cf">function</span>(...,<span class="at">dat =</span> dat, <span class="at">i =</span> i, <span class="at">block =</span> block) {<span class="fu">plot</span>(...,<span class="at">x =</span> i <span class="sc">+</span> <span class="dv">1</span><span class="sc">:</span>block, <span class="at">xlab =</span> <span class="st">&quot;índice del párrafo&quot;</span>, <span class="at">ylim =</span> <span class="fu">range</span>(dat), <span class="at">ylab =</span> <span class="fu">sprintf</span>(<span class="st">&quot;ObamaSpeech[%s:%s]&quot;</span>, i <span class="sc">+</span> <span class="dv">1</span>, i <span class="sc">+</span> block))}, <span class="at">type =</span> <span class="st">&quot;o&quot;</span>, <span class="at">pch =</span> <span class="dv">20</span>)},<span class="at">htmlfile =</span> <span class="st">&quot;Obama.html&quot;</span>, <span class="at">img.name =</span> <span class="st">&quot;Obama&quot;</span>, <span class="at">imgdir =</span> <span class="st">&quot;images/obama&quot;</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HTML file created at: Obama.html</span></span></code></pre></div>
 <p>Podemos ver la animación en el archivo <a href="./Obama.html">Obama.html</a>.</p>
 </div>
@@ -629,9 +629,10 @@ la división en entrenamiento y test.</p>
 <span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="fu">saveHTML</span>(</span>
 <span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">generate_result</span>(),</span>
 <span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">htmlfile =</span> <span class="st">&quot;kNN.html&quot;</span>,</span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">img.name =</span> <span class="st">&quot;k_nn&quot;</span></span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HTML file created at: kNN.html</span></span></code></pre></div>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">img.name =</span> <span class="st">&quot;k_nn&quot;</span>,</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">imgdir =</span> <span class="st">&quot;images/knn&quot;</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HTML file created at: kNN.html</span></span></code></pre></div>
 <p>El resultado lo podemos visualizar en <a href="kNN.html">este
 documento html</a></p>
 </div>
@@ -707,9 +708,10 @@ número de centros:</p>
 <span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="fu">saveHTML</span>(</span>
 <span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">generate_result</span>(),</span>
 <span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">htmlfile =</span> <span class="st">&quot;kMeans.html&quot;</span>,</span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">img.name =</span> <span class="st">&quot;k_means&quot;</span></span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HTML file created at: kMeans.html</span></span></code></pre></div>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">img.name =</span> <span class="st">&quot;k_means&quot;</span>,</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">imgdir =</span> <span class="st">&quot;images/kmeans&quot;</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HTML file created at: kMeans.html</span></span></code></pre></div>
 <p>El resultado lo podemos visualizar en <a href="kMeans.html">este
 documento html</a></p>
 </div>
